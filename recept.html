@@ -87,7 +87,7 @@
         <a href="index.html" class="site-logo">🥞</a>
         <nav>
           <ul>
-            <li><a href="recept.html" aria-current="page">Recept</a></li>
+            <li><a href="recept.html" class="active">Recept</a></li>
             <li><a href="#about">Om sajten</a></li>
           </ul>
           <a href="dela-recept.html" class="btn">Dela recept</a>
@@ -96,87 +96,114 @@
     </header>
 
     <main id="main-content" class="recipe-container" tabindex="-1">
-      <!-- Hero image at the top -->
-      <!-- WebP is preferred, followed by AVIF and PNG fallbacks for browsers that do not support the earlier formats. -->
-      <!-- LCP (Largest Contentful Paint) measures how long it takes for the largest visible content to appear.
-         That is why the hero image has high priority. -->
-      <picture>
-        <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
-        <source srcset="images/avif/Pancake_Top.avif" type="image/avif" />
-        <img
-          class="hero-image"
-          src="images/png/Pancake_Top.png"
-          alt="En tunn pannkaka vikt med hallon och grädde"
-          width="1280"
-          height="500"
-          fetchpriority="high"
-        />
-      </picture>
-
-      <!-- Header and introduction -->
-      <header class="recipe-content">
-        <h1>Enkelt recept på pannkakor</h1>
-        <div class="intro-text">
-          <p>
-            Gör traditionella tunna pannkakor med detta enkla och goda
-            pannkaksrecept.
-          </p>
+      <!-- Main content wrapper with two-column layout -->
+      <div class="recipe-layout">
+        <!-- Left column: Hero image -->
+        <div class="recipe-image-column">
+          <!-- WebP is preferred, followed by AVIF and PNG fallbacks for browsers that do not support the earlier formats. -->
+          <!-- LCP (Largest Contentful Paint) measures how long it takes for the largest visible content to appear.
+             That is why the hero image has high priority. -->
+          <picture>
+            <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
+            <source srcset="images/avif/Pancake_Top.avif" type="image/avif" />
+            <img
+              class="hero-image"
+              src="images/png/Pancake_Top.png"
+              alt="En tunn pannkaka vikt med hallon och grädde"
+              width="1280"
+              height="500"
+              fetchpriority="high"
+            />
+          </picture>
         </div>
-      </header>
 
-      <!-- Grid layout for ingredients and instructions -->
-      <div class="recipe-grid recipe-content">
-        <!-- Ingredients -->
-        <section class="ingredients">
-          <h2>Ingredienser</h2>
-          <!-- dl = description list groups information;
-            dt = description term names the term;
-            dd = description details provides the description. -->
-          <dl class="portions">
-            <dt class="visually-hidden">Antal portioner</dt>
-            <dd>För 4 portioner</dd>
-          </dl>
-          <ul>
-            <li>
-              <label><input type="checkbox" /> 2 ½ dl vetemjöl</label>
-            </li>
-            <li>
-              <label><input type="checkbox" /> ½ tsk salt</label>
-            </li>
-            <li>
-              <label><input type="checkbox" /> 6 dl mjölk</label>
-            </li>
-            <li>
-              <label><input type="checkbox" /> 3 st ägg</label>
-            </li>
-            <li>
-              <label><input type="checkbox" /> smör (till stekning)</label>
-            </li>
-            <li>
-              <label
-                ><input type="checkbox" /> sylt, bär eller frukt till
-                servering</label
-              >
-            </li>
-          </ul>
-        </section>
+        <!-- Right column: Recipe content -->
+        <div class="recipe-content-column">
+          <!-- Header and introduction -->
+          <h1>Enkelt recept på pannkakor</h1>
+          <header class="recipe-header">
+            <div class="intro-text">
+              <p>
+                Gör traditionella tunna pannkakor med detta enkla och goda
+                pannkaksrecept.
+              </p>
+            </div>
+          </header>
 
-        <!-- Instructions -->
-        <section class="instructions">
-          <h2>Så här gör du</h2>
-          <ol>
-            <li>Blanda mjöl och salt i en bunke.</li>
-            <li>Vispa i hälften av mjölken och vispa till en slät smet.</li>
-            <li>Vispa i resten av mjölken och äggen.</li>
-            <li>Låt smeten vila ca 10 minuter.</li>
-            <li>
-              Stek tunna pannkakor i lite smör, för varje pannkaka, i en stek-
-              eller pannkakspanna.
-            </li>
-            <li>Servera med sylt, bär eller frukt.</li>
-          </ol>
-        </section>
+          <!-- Recipe metadata -->
+          <div class="recipe-meta-info">
+            <dl>
+              <div class="meta-item">
+                <dt>Portioner</dt>
+                <dd>4</dd>
+              </div>
+              <div class="meta-item">
+                <dt>Tid</dt>
+                <dd>30 min</dd>
+              </div>
+              <div class="meta-item">
+                <dt>Svårighet</dt>
+                <dd>Lätt</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Grid layout for ingredients and instructions -->
+          <div class="recipe-grid">
+            <!-- Ingredients -->
+            <section class="ingredients">
+              <h2>Ingredienser</h2>
+              <!-- dl = description list groups information;
+                dt = description term names the term;
+                dd = description details provides the description. -->
+              <dl class="portions">
+                <dt class="visually-hidden">Antal portioner</dt>
+                <dd>För 4 portioner</dd>
+              </dl>
+              <ul>
+                <li>
+                  <label><input type="checkbox" /> 2 ½ dl vetemjöl</label>
+                </li>
+                <li>
+                  <label><input type="checkbox" /> ½ tsk salt</label>
+                </li>
+                <li>
+                  <label><input type="checkbox" /> 6 dl mjölk</label>
+                </li>
+                <li>
+                  <label><input type="checkbox" /> 3 st ägg</label>
+                </li>
+                <li>
+                  <label><input type="checkbox" /> smör (till stekning)</label>
+                </li>
+                <li>
+                  <label
+                    ><input type="checkbox" /> sylt, bär eller frukt till
+                    servering</label
+                  >
+                </li>
+              </ul>
+            </section>
+
+            <!-- Instructions -->
+            <section class="instructions">
+              <h2>Så här gör du</h2>
+              <ol>
+                <li>Blanda mjöl och salt i en bunke.</li>
+                <li>Vispa i hälften av mjölken och vispa till en slät smet.</li>
+                <li>Vispa i resten av mjölken och äggen.</li>
+                <li>Låt smeten vila ca 10 minuter.</li>
+                <li>
+                  Stek tunna pannkakor i lite smör, för varje pannkaka, i en stek-
+                  eller pannkakspanna.
+                </li>
+                <li>Servera med sylt, bär eller frukt.</li>
+              </ol>
+            </section>
+          </div>
+        </div>
       </div>
+
       <!-- Serving suggestions with two images -->
       <section class="serving-suggestions recipe-content">
         <h2>Serveringsförslag</h2>
