@@ -57,6 +57,9 @@ if (recipeForm) {
             if (input.checkValidity()) {
                 input.classList.add('valid');
                 input.classList.remove('invalid');
+            } else {
+                input.classList.add('invalid');
+                input.classList.remove('valid');
             }
         });
     });
@@ -66,6 +69,9 @@ if (recipeForm) {
             if (!e.target.checkValidity()) {
                 e.target.classList.add('invalid');
                 e.target.classList.remove('valid');
+            } else {
+                e.target.classList.remove('invalid');
+                e.target.classList.add('valid');
             }
         }
     }, true);
