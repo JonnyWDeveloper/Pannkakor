@@ -92,8 +92,20 @@ img {
   max-width: 100%;
 }
 
-:where(body, h1, h2, p, figure) {
+/* Globala återställningar med :where() - Rensa bort default-marginaler */
+:where(h1, h2, h3, h4, h5, h6, p, figure, ul, ol) {
   margin: 0;
+}
+
+/* Border-utility för konsekventa kanter */
+.border-base {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+/* Typografi-baslinjer - Gruppera rubriker */
+:is(h1, h2) {
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
 }
 
 /* Body typography - fluid sizing with clamp() for responsive scaling */
@@ -162,10 +174,14 @@ main {
 }
 
 /* Main container - responsive max-width with fluid margins */
+/* Gemensam bas för containrar */
+:is(.recipe-container, .header-inner, .footer-inner, .recipe-cards, .form-container) {
+  margin-inline: auto;
+}
+
 .recipe-container {
   background-color: var(--color-bg);
   width: min(95%, 68.75rem);
-  margin-inline: auto;
   margin-block: clamp(2rem, 5vw, 3.75rem);
   border-inline: 1px solid var(--color-border);
 
@@ -442,7 +458,6 @@ header {
 
 .header-inner {
   width: min(95%, 68.75rem);
-  margin-inline: auto;
   padding: var(--spacing-md) clamp(1rem, 3vi, 1.5rem);
   display: flex;
   align-items: center;
@@ -533,7 +548,6 @@ footer {
 
 .footer-inner {
   width: min(95%, 68.75rem);
-  margin-inline: auto;
   padding: clamp(1.5rem, 5vi, 2.5rem) clamp(1rem, 3vi, 1.5rem);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -690,7 +704,6 @@ h2:has(+ .recipe-cards) {
 
 .recipe-cards {
   width: min(95%, 68.75rem);
-  margin-inline: auto;
   padding: clamp(1rem, 3vi, 1.5rem);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
@@ -699,7 +712,7 @@ h2:has(+ .recipe-cards) {
 }
 
 /* Gemensam bas för "kort" och containrar */
-:is(.recipe-card, fieldset) {
+:is(.recipe-card, fieldset, .intro-text) {
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
@@ -773,7 +786,6 @@ h2:has(+ .recipe-cards) {
 .form-container {
   width: min(95%, 48rem);
   margin-block: clamp(2rem, 5vw, 3rem);
-  margin-inline: auto;
   padding: clamp(1.5rem, 4vw, 2.5rem);
 
   h1 {
@@ -885,10 +897,11 @@ select {
   flex-direction: column;
   gap: 0.5rem;
 
-  &:has(input:user-invalid) {
+  /* &:has(input:user-invalid),
+  &:has(textarea:user-invalid) {
     border-left: 4px solid var(--color-error);
     padding-left: var(--spacing-sm);
-  }
+  } */
 
   label {
     margin-block: 0;
