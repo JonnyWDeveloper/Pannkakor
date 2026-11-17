@@ -2,47 +2,35 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-            .then(registration => {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(error => {
-                console.log('ServiceWorker registration failed: ', error);
-            });
+            .then(registration => console.log('ServiceWorker registered: ', registration.scope))
+            .catch(error => console.error('ServiceWorker registration failed: ', error));
     });
 }
 
-// Add fallback support for :has() selector in older browsers
-// This adds/removes the .checked class on ingredient list items for CSS fallback styling
-document.addEventListener('DOMContentLoaded', () => {
-    const ingredientCheckboxes = document.querySelectorAll('.ingredients input[type="checkbox"]');
-    
-    ingredientCheckboxes.forEach(checkbox => {
-        // Set initial state on page load
-        const listItem = checkbox.closest('li');
-        if (listItem && checkbox.checked) {
-            listItem.classList.add('checked');
+// Event Delegation for ingredient checkboxes
+document.addEventListener('change', (event) => {
+    if (event.target.matches('.ingredients input[type="checkbox"]')) {
+        const listItem = event.target.closest('li');
+        if (listItem) {
+            listItem.classList.toggle('checked', event.target.checked);
         }
-        
-        // Update class when checkbox state changes
-        checkbox.addEventListener('change', (event) => {
-            const listItem = event.target.closest('li');
-            if (listItem) {
-                listItem.classList.toggle('checked', event.target.checked);
-            }
-        });
-    });
+    }
 });
 
-// Handle form submission on the recipe sharing page
+// Set initial checked state
+document.querySelectorAll('.ingredients input[type="checkbox"]:checked').forEach(checkbox => {
+    checkbox.closest('li')?.classList.add('checked');
+});
+
+// Handle form submission and real-time validation
 const recipeForm = document.getElementById('recipeForm');
 if (recipeForm) {
     recipeForm.addEventListener('submit', (e) => {
-        if (e.target.checkValidity() === false) {
+        if (!e.target.checkValidity()) {
             e.preventDefault();
             e.stopPropagation();
         } else {
             e.preventDefault();
-            // Reset form and reload page
             setTimeout(() => {
                 e.target.reset();
                 location.reload();
@@ -50,30 +38,15 @@ if (recipeForm) {
         }
     });
 
-    // Add visual feedback for form validation
-    recipeForm.addEventListener('change', () => {
-        const inputs = recipeForm.querySelectorAll('input[required], textarea[required], select[required]');
-        inputs.forEach(input => {
-            if (input.checkValidity()) {
-                input.classList.add('valid');
-                input.classList.remove('invalid');
-            } else {
-                input.classList.add('invalid');
-                input.classList.remove('valid');
-            }
-        });
-    });
+    // Unified validation handler
+    const validate = (element) => {
+        if (!element.matches('input, textarea, select')) return;
+        const isValid = element.checkValidity();
+        element.classList.toggle('valid', isValid);
+        element.classList.toggle('invalid', !isValid);
+    };
 
-    recipeForm.addEventListener('blur', (e) => {
-        if (e.target.matches('input, textarea, select')) {
-            if (!e.target.checkValidity()) {
-                e.target.classList.add('invalid');
-                e.target.classList.remove('valid');
-            } else {
-                e.target.classList.remove('invalid');
-                e.target.classList.add('valid');
-            }
-        }
-    }, true);
+    recipeForm.addEventListener('input', (e) => validate(e.target));
+    recipeForm.addEventListener('blur', (e) => validate(e.target), true);
 }
 
