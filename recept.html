@@ -64,17 +64,8 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥞</text></svg>"
     />
 
-    <!-- Preload the stylesheet asynchronously to keep CSS separate and avoid render-blocking -->
-    <link
-      rel="preload"
-      href="style.css"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript><link rel="stylesheet" href="style.css" /></noscript>
+    <!-- Link to stylesheet -->
+    <link rel="stylesheet" href="style.css" />
 
     <script src="script.js" defer></script>
   </head>
@@ -118,8 +109,7 @@
         </div>
 
         <!-- Right column: Recipe content -->
-        <!-- Right column: Recipe content -->
-        <div class="recipe-content-column"> 
+        <div class="recipe-content-column">
           <h1>Enkelt recept på pannkakor</h1>
 
           <!-- Recipe metadata -->
@@ -214,12 +204,8 @@
                 srcset="images/webp/Pancake_Bottom_Left.webp"
                 type="image/webp"
               />
-              <source
-                srcset="images/avif/Pancake_Bottom_Left.avif"
-                type="image/avif"
-              />
               <img
-                src="images/png/Pancake_Bottom_Left.png"
+                src="images/webp/Pancake_Bottom_Left.webp"
                 alt="Pannkakor med citron, hallon och grädde."
                 width="800"
                 height="600"
@@ -237,12 +223,8 @@
                 srcset="images/webp/Pancake_Bottom_Right.webp"
                 type="image/webp"
               />
-              <source
-                srcset="images/avif/Pancake_Bottom_Right.avif"
-                type="image/avif"
-              />
               <img
-                src="images/png/Pancake_Bottom_Right.png"
+                src="images/webp/Pancake_Bottom_Right.webp"
                 alt="Vikta pannkakor med apelsin, honung och grädde."
                 width="800"
                 height="600"

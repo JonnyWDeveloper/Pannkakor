@@ -19,7 +19,10 @@ const LEGACY_CACHE_NAME = 'pankakor-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
+  './recept.html',
+  './dela-recept.html',
   './style.css',
+  './script.js',
   './images/webp/Pancake_Top.webp',
   './images/webp/Pancake_Bottom_Left.webp',
   './images/webp/Pancake_Bottom_Right.webp',

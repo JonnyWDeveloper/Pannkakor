@@ -22,31 +22,37 @@ document.querySelectorAll('.ingredients input[type="checkbox"]:checked').forEach
     checkbox.closest('li')?.classList.add('checked');
 });
 
-// Handle form submission and real-time validation
+// Handle form submission - prevent popups, allow page reload when valid
 const recipeForm = document.getElementById('recipeForm');
 if (recipeForm) {
-    recipeForm.addEventListener('submit', (e) => {
-        if (!e.target.checkValidity()) {
-            e.preventDefault();
-            e.stopPropagation();
-        } else {
-            e.preventDefault();
-            setTimeout(() => {
-                e.target.reset();
-                location.reload();
-            }, 100);
-        }
-    });
-
-    // Unified validation handler
-    const validate = (element) => {
-        if (!element.matches('input, textarea, select')) return;
-        const isValid = element.checkValidity();
-        element.classList.toggle('valid', isValid);
-        element.classList.toggle('invalid', !isValid);
+    // Swedish messages matching the visual .error-message text. setCustomValidity()
+    // replaces the browser's default wording; reportValidity() then shows and
+    // announces it via the browser's native, screen-reader-accessible validation UI
+    // (no ARIA needed - this is built into the Constraint Validation API).
+    const customMessages = {
+        recipeName: 'Receptets namn är obligatoriskt',
+        ingredients: 'Ingredienser är obligatoriska',
+        instructions: 'Instruktioner är obligatoriska',
+        userEmail: 'Ange en giltig e-postadress',
     };
 
-    recipeForm.addEventListener('input', (e) => validate(e.target));
-    recipeForm.addEventListener('blur', (e) => validate(e.target), true);
+    // Object.entries(customMessages).forEach(([name, message]) => {
+    //     const field = recipeForm.elements[name];
+    //     if (!field) return;
+    //     field.addEventListener('invalid', () => field.setCustomValidity(message));
+    //     field.addEventListener('input', () => field.setCustomValidity(''));
+    // });
+
+    recipeForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!recipeForm.checkValidity()) {
+            recipeForm.reportValidity();
+            return;
+        }
+        setTimeout(() => {
+            recipeForm.reset();
+            location.reload();
+        }, 100);
+    });
 }
 

@@ -16,7 +16,19 @@
       content="Skicka in ditt eget recept till vår receptsamling."
     />
     <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://jonnywdeveloper.github.io/Pannkakor/dela-recept.html"
+    />
     <meta property="og:locale" content="sv_SE" />
+    <meta
+      property="og:image"
+      content="https://jonnywdeveloper.github.io/Pannkakor/images/webp/Pancake_Top.webp"
+    />
+    <meta
+      property="og:image:alt"
+      content="En tunn pannkaka vikt med hallon och grädde"
+    />
 
     <meta
       name="description"
@@ -45,17 +57,8 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥞</text></svg>"
     />
 
-    <!-- Preload the stylesheet asynchronously -->
-    <link
-      rel="preload"
-      href="style.css"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript><link rel="stylesheet" href="style.css" /></noscript>
+    <!-- Link to stylesheet -->
+    <link rel="stylesheet" href="style.css" />
 
     <script src="script.js" defer></script>
   </head>
@@ -96,6 +99,7 @@
                 placeholder="T.ex. Klassiska pannkakor"
                 autocomplete="off"
               />
+              <div class="error-message">Receptets namn är obligatoriskt</div>
             </div>
 
             <div class="form-group">
@@ -167,6 +171,7 @@
                 required
                 placeholder="Skriv en ingrediens per rad, t.ex.&#10;2 1/2 dl vetemjöl&#10;1/2 tsk salt&#10;6 dl mjölk"
               ></textarea>
+              <div class="error-message">Ingredienser är obligatoriska</div>
             </div>
 
             <div class="form-group">
@@ -177,6 +182,7 @@
                 required
                 placeholder="Skriv instruktionerna steg för steg, en per rad"
               ></textarea>
+              <div class="error-message">Instruktioner är obligatoriska</div>
             </div>
           </fieldset>
 
@@ -205,6 +211,7 @@
                 placeholder="anna@exempel.se"
                 autocomplete="email"
               />
+              <div class="error-message">Ange en giltig e-postadress</div>
               <small>Vi använder din e-post bara för att kontakta dig om receptet.</small>
             </div>
           </fieldset>

@@ -326,8 +326,6 @@ h1 {
   }
 }
 
-/* Recipe metadata - displays portions, time, and difficulty */
-
 /* Recipe grid - 2-column layout for ingredients and instructions */
 .recipe-grid {
   grid-area: grid;
@@ -382,10 +380,6 @@ h1 {
   li {
     padding-block: var(--spacing-sm);
   }
-}
-
-/* Serving suggestions section - similar styling to other sections */
-.serving-suggestions {
 }
 
 /* Gallery grid - auto-fit image grid with responsive image sizes */
@@ -598,14 +592,7 @@ footer {
    HOME PAGE - HERO & CATEGORIES
    ================================================================ */
 
-h2:has(+ .categories) {
-  width: min(95%, 68.75rem);
-  margin: 0 auto clamp(0.75rem, 2vw, 1.5rem);
-  padding-inline: clamp(1rem, 3vi, 1.5rem);
-  font-size: 1.5rem;
-}
-
-h2:has(+ .recipe-cards) {
+h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
   width: min(95%, 68.75rem);
   margin: 0 auto clamp(0.75rem, 2vw, 1.5rem);
   padding-inline: clamp(1rem, 3vi, 1.5rem);
@@ -884,12 +871,6 @@ select {
   flex-direction: column;
   gap: 0.5rem;
 
-  /* &:has(input:user-invalid),
-  &:has(textarea:user-invalid) {
-    border-left: 4px solid var(--color-error);
-    padding-left: var(--spacing-sm);
-  } */
-
   label {
     margin-block: 0;
   }
@@ -904,7 +885,7 @@ select {
   color: var(--color-error);
   font-size: 0.875rem;
   margin-block-start: -0.25rem;
-  display: flex;
+  display: none;
   align-items: center;
   gap: 0.25rem;
 
@@ -912,6 +893,13 @@ select {
     content: "✗";
     font-weight: 700;
   }
+}
+
+/* Show error message only when input is invalid */
+input:user-invalid ~ .error-message,
+textarea:user-invalid ~ .error-message,
+select:user-invalid ~ .error-message {
+  display: flex;
 }
 
 button {
