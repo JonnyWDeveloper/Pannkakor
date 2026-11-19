@@ -79,7 +79,11 @@
   box-sizing: border-box;
 }
 /* Gör tryck mer responsiva på touch-enheter */
-* {
+button,
+a,
+input,
+select,
+textarea {
   touch-action: manipulation;
 }
 
@@ -112,6 +116,7 @@ img {
 
 /* Body typography - fluid sizing with clamp() for responsive scaling */
 body {
+  margin: 0;
   background-color: var(--color-accent);
   display: flex;
   flex-direction: column;
@@ -197,15 +202,10 @@ main {
   }
 }
 
-/* Two-column layout for recipe page - responsive single column on mobile */
+/* Two-column layout for recipe page - columns wrap fluidly without breakpoints */
 .recipe-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: auto;
-  grid-template-areas:
-    "image header"
-    "image metadata"
-    "grid grid";
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(20rem, 45%)), 1fr));
   gap: clamp(1.5rem, 3vw, 2.5rem);
   padding: clamp(1.5rem, 5vh, 2.5rem) clamp(1rem, 3vi, 1.5rem);
 }
@@ -213,8 +213,6 @@ main {
 .recipe-image-column {
   display: flex;
   align-items: stretch;
-  grid-area: image;
-  grid-row: 1 / 3;
 
   picture {
     display: block;
@@ -235,38 +233,33 @@ main {
   }
 }
 
-.recipe-content-column {
-  display: contents;
-}
-
 h1 {
-  grid-area: header;
   margin-block: 0 0.75rem;
   color: var(--color-primary);
   font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
+  text-align: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-
-
 .recipe-meta-info {
-  grid-area: metadata;
   margin-block-end: clamp(1.5rem, 4vw, 3rem);
 
   dl {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: clamp(1.5rem, 3vw, 2.5rem);
     margin: 0;
     padding: 0;
-    list-style: none;
   }
 
   .meta-item {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 0.25rem;
+    text-align: center;
 
     dt {
       font-weight: 600;
@@ -328,9 +321,9 @@ h1 {
 
 /* Recipe grid - 2-column layout for ingredients and instructions */
 .recipe-grid {
-  grid-area: grid;
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
@@ -552,6 +545,12 @@ footer {
     font-size: 0.9rem;
   }
 
+  .footer-logo {
+    margin-block-end: var(--spacing-sm);
+    font-size: 2rem;
+    line-height: 1;
+  }
+
   ul {
     list-style: none;
     padding: 0;
@@ -632,6 +631,7 @@ h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
       margin: 0;
       text-shadow: 2px 2px 4px oklch(0% 0 0 / 0.5);
       text-wrap: balance;
+      text-align: start;
       max-width: 30ch;
     }
 
