@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <!-- Canonical link for SEO -->
-    <link rel="canonical" href="https://jonnywdeveloper.github.io/Pannkakor/" />
+    <link rel="canonical" href="https://jonnywdeveloper.github.io/Pannkakor/recept.html" />
 
     <!-- Open Graph tags for social media -->
     <meta
@@ -18,7 +19,7 @@
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://jonnywdeveloper.github.io/Pannkakor/"
+      content="https://jonnywdeveloper.github.io/Pannkakor/recept.html"
     />
     <meta property="og:locale" content="sv_SE" />
     <meta
@@ -37,10 +38,6 @@
 
     <title>Pannkakor - Enkelt recept på pannkakor</title>
     <meta name="theme-color" content="#ffffff" />
-
-    <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
     <!-- Preload fonts and the LCP image -->
     <link
@@ -64,9 +61,6 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥞</text></svg>"
     />
 
-    <!-- Link to stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-
     <script src="script.js" defer></script>
   </head>
 
@@ -75,13 +69,13 @@
 
     <header>
       <div class="header-inner">
-        <a href="index.html" class="site-logo">🥞</a>
+        <a href="index.html" class="site-logo"><span class="visually-hidden">Pannkakor, startsida</span></a>
         <nav>
           <ul>
-            <li><a href="recept.html" class="active">Recept <span class="visually-hidden">(nuvarande sida)</span></a></li>
-            <li><a href="#about">Om sajten</a></li>
+            <li><a href="recept.html" aria-current="page">Recept</a></li>
+            <li><a href="#">Om sajten</a></li>
+            <li><a href="dela-recept.html" class="btn">Dela recept</a></li>
           </ul>
-          <a href="dela-recept.html" class="btn">Dela recept</a>
         </nav>
       </div>
     </header>
@@ -113,28 +107,26 @@
           <h1>Enkelt recept på pannkakor</h1>
 
           <!-- Recipe metadata -->
-          <div class="recipe-meta-info">
-            <div class="intro-text">
-              <p>
-                Gör traditionella tunna pannkakor med detta enkla och goda
-                pannkaksrecept. Perfekt för både vardagsmiddagen och helgfikat!
-              </p>
-            </div>
-            <dl>
-              <div class="meta-item">
-                <dt>Portioner</dt>
-                <dd>4</dd>
-              </div>
-              <div class="meta-item">
-                <dt>Tid</dt>
-                <dd>30 min</dd>
-              </div>
-              <div class="meta-item">
-                <dt>Svårighet</dt>
-                <dd>Lätt</dd>
-              </div>
-            </dl>
+          <div class="intro-text">
+            <p>
+              Gör traditionella tunna pannkakor med detta enkla och goda
+              pannkaksrecept. Perfekt för både vardagsmiddagen och helgfikat!
+            </p>
           </div>
+          <dl class="recipe-meta-info">
+            <div class="meta-item">
+              <dt>Portioner</dt>
+              <dd>4</dd>
+            </div>
+            <div class="meta-item">
+              <dt>Tid</dt>
+              <dd>30 min</dd>
+            </div>
+            <div class="meta-item">
+              <dt>Svårighet</dt>
+              <dd>Lätt</dd>
+            </div>
+          </dl>
         </div>
 
         <!-- Grid layout for ingredients and instructions -->
@@ -194,7 +186,7 @@
 
       <!-- Serving suggestions with two images -->
       <section class="serving-suggestions recipe-content">
-        <h2>Serveringsförslag</h2>
+        <h2>Serverings&shy;förslag</h2>
         <div class="gallery-grid">
           <figure>
             <!-- WebP is preferred, with AVIF and PNG as fallbacks.
@@ -241,8 +233,30 @@
     </main>
 
     <footer>
+      <div class="footer-inner">
+        <div class="footer-section footer-brand">
+          <p>Enkla vardagsrecept som alla kan laga.</p>
+        </div>
+        <div class="footer-section">
+          <h2>Fler recept</h2>
+          <ul>
+            <li><a href="recept.html">Klassiska pannkakor</a></li>
+            <li><a href="#">Frukost</a></li>
+            <li><a href="#">Middag</a></li>
+            <li><a href="#">Efterrätt</a></li>
+            <li><a href="#">Fika</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h2>Om sajten</h2>
+          <ul>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="#">Kontakt</a></li>
+          </ul>
+        </div>
+      </div>
       <div class="footer-bottom">
-        <p>Bilder från picsum.photos · © 2026 Ditt namn</p>
+        <p>© 2026 Pannkakor</p>
       </div>
     </footer>
   </body>

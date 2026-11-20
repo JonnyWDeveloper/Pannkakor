@@ -33,32 +33,36 @@
 /* Unit strategy: rem for scalable spacing and dimensions; px for crisp line thickness. */
 /* Design tokens: All colors, spacing, and dimensions are defined as variables for easy maintenance */
 :root {
+  /* Design Tokens */
+  --content-width: 68.75rem;
+  --gutter: clamp(1rem, 3vi, 1.5rem);
   /* Color palette - OKLCH system for perceptually uniform colors */
   --color-primary: oklch(40% 0.15 25);
-  --color-accent: oklch(75% 0.08 30);
+  --color-heading: oklch(32.769% 0.02555 220.54);
+  --color-page-bg: oklch(85.052% 0.01633 233.06);
   --color-text: oklch(15% 0.02 220);
   --color-text-secondary: oklch(18% 0.03 220);
   --color-text-muted: oklch(40% 0.02 220);
   --color-bg: oklch(99% 0.001 0);
   --color-intro-bg: oklch(92% 0.01 220);
+  --color-hero-text-bg: color-mix(in oklch, var(--color-heading) 85%, transparent);
+  --color-hero-edge-bg: color-mix(in oklch, var(--color-heading) 50%, transparent);
   --color-focus: oklch(45% 0.22 280);
   --color-link: oklch(99% 0.001 0);
-  --color-skip-bg: oklch(75% 0.08 30);
-  --color-skip-text: oklch(99% 0.001 0);
+  --color-skip-bg: var(--color-intro-bg);
+  --color-skip-text: var(--color-heading);
   --color-success: oklch(60% 0.2 140);
   --color-error: oklch(50% 0.2 25);
-
   /* Color opacity utilities */
-  --color-border: oklch(0% 0 0 / 5%);
+  --color-border: oklch(30% 0 0);
   --color-hover: oklch(0% 0 0 / 3%);
   --color-shadow: oklch(0% 0 0 / 5%);
   --color-focus-shadow: oklch(45% 0.22 280 / 0.25);
-
   /* Spacing scale - rem for responsive scaling */
   --spacing-sm: 0.375rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2.5rem;
-
+  --min-target-size: 44px;
   /* Border radius - used consistently throughout */
   --border-radius: 0.25rem;
 }
@@ -72,7 +76,7 @@
     format("woff2");
 }
 
-/* Base reset - normalize box sizing and remove browser default margins */
+/* CSS-reset (inspirerad av Modern CSS Reset av Andy Bell: https://piccalil.li/blog/a-modern-css-reset/) */
 *,
 *::before,
 *::after {
@@ -85,6 +89,29 @@ input,
 select,
 textarea {
   touch-action: manipulation;
+}
+
+:where(a:any-link) {
+  border-radius: var(--border-radius);
+  text-decoration: none;
+}
+
+a:any-link:hover {
+  background-color: var(--color-intro-bg);
+  color: var(--color-text);
+
+  &:not(:focus-visible) {
+    outline: 1px solid var(--color-border);
+    outline-offset: 1px;
+  }
+}
+
+:where(.skip-link, .site-logo, header nav a, .footer-section a, .category-tag, .card-content a) {
+  display: inline-flex;
+  align-items: center;
+  min-inline-size: var(--min-target-size);
+  min-block-size: var(--min-target-size);
+  padding: var(--spacing-sm);
 }
 
 
@@ -101,13 +128,6 @@ img {
   margin: 0;
 }
 
-/* Fokus-stil */
-:where(button, input, select, textarea, .recipe-card):focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--color-focus-shadow);
-}
-
 /* Gemensam border-stil för komponenter */
 :where(.recipe-card, fieldset, .intro-text) {
   border: 1px solid var(--color-border);
@@ -117,7 +137,7 @@ img {
 /* Body typography - fluid sizing with clamp() for responsive scaling */
 body {
   margin: 0;
-  background-color: var(--color-accent);
+  background-color: var(--color-page-bg);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -135,7 +155,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  padding-block-start: 5rem;
+
 }
 
 main {
@@ -155,17 +175,20 @@ main {
 .skip-link {
   position: absolute;
   inset-block-start: -3.75rem;
-  inset-inline-start: 0;
+  inset-inline-start: var(--spacing-sm);
   z-index: 1000;
-  padding: 0.75rem 1.5rem;
+  max-inline-size: calc(100% - 2 * var(--spacing-sm));
+  padding: var(--spacing-sm) var(--gutter);
+  overflow-wrap: anywhere;
   color: var(--color-skip-text);
   background-color: var(--color-skip-bg);
+  border: 2px solid var(--color-heading);
   transition: inset-block-start 0.2s ease;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
 
   &:focus-visible {
-    inset-block-start: 0;
+    inset-block-start: var(--spacing-sm);
     clip: auto;
   }
 }
@@ -191,6 +214,7 @@ main {
   width: min(95%, 68.75rem);
   margin-block: clamp(2rem, 5vw, 3.75rem);
   border-inline: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
 
   .hero-image {
     display: block;
@@ -219,42 +243,49 @@ main {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    /* border-radius: 1rem; */
     box-shadow: 0 0.125rem 0.625rem var(--color-shadow);
-  }
-
-  .hero-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1280 / 700;
-    object-fit: cover;
-    border-radius: var(--border-radius);
   }
 }
 
 h1 {
   margin-block: 0 0.75rem;
-  color: var(--color-primary);
+  color: var(--color-heading);
   font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
   text-align: center;
-  word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-.recipe-meta-info {
-  margin-block-end: clamp(1.5rem, 4vw, 3rem);
+h2 {
+  overflow-wrap: anywhere;
+}
 
-  dl {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-    margin: 0;
-    padding: 0;
+.recipe-content-column {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--spacing-sm), 2vi, var(--spacing-md));
+
+  h1 {
+    margin-block-end: 0;
+    font-size: clamp(1.5rem, 1.15rem + 1vi, 2rem);
   }
+}
+
+.recipe-meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  margin: 0;
+  background-color: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  overflow: clip;
 
   .meta-item {
+    flex: 1 1 6rem;
+    min-inline-size: 0;
+    padding: var(--spacing-sm);
+    background-color: var(--color-bg);
+    overflow-wrap: anywhere;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -273,7 +304,7 @@ h1 {
       margin: 0;
       font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
       font-weight: 700;
-      color: var(--color-primary);
+      color: var(--color-heading);
     }
   }
 }
@@ -289,8 +320,6 @@ h1 {
 
   h1 {
     margin-block: 0.75rem var(--spacing-md);
-    color: var(--color-primary);
-    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
   }
 
   h2 {
@@ -300,15 +329,18 @@ h1 {
 
   /* Full-width sections below the layout (serving suggestions) */
   &:not(.recipe-layout *) {
-    padding: clamp(1.5rem, 5vi, 2.5rem) clamp(1rem, 3vi, 1.5rem);
+    padding-block: clamp(1.5rem, 5vi, 2.5rem);
+    padding-inline: min(var(--gutter), 5%);
   }
 }
 
 /* Intro section - highlighted with background color and responsive spacing */
 .intro-text {
   display: block;
-  margin-block-end: clamp(1.5rem, 4vw, 3rem);
-  padding: var(--spacing-md);
+  margin-block: auto;
+  padding-block: var(--spacing-md);
+  padding-inline: min(var(--spacing-md), 8%);
+  overflow-wrap: anywhere;
   border-radius: var(--border-radius);
   background-color: var(--color-intro-bg);
 
@@ -345,8 +377,19 @@ h1 {
     list-style: none;
   }
 
-  li {
+  label {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--min-target-size);
+    margin-block: 0;
     padding: var(--spacing-sm);
+
+    input {
+      flex-shrink: 0;
+    }
+  }
+
+  li {
     border-radius: var(--border-radius);
     transition:
       background-color 0.2s ease,
@@ -371,7 +414,10 @@ h1 {
   }
 
   li {
+    min-block-size: var(--min-target-size);
+    align-content: center;
     padding-block: var(--spacing-sm);
+    overflow-wrap: anywhere;
   }
 }
 
@@ -423,89 +469,71 @@ h1 {
 header {
   background-color: var(--color-bg);
   border-block-end: 1px solid var(--color-border);
-  position: fixed;
-  inset: 0 0 auto 0;
+  position: sticky;
+  inset-block-start: 0;
   z-index: 999;
-  contain: paint;
+}
+
+body:has(> main:target) > header {
+  position: static;
 }
 
 .header-inner {
-  width: min(95%, 68.75rem);
-  padding: var(--spacing-md) clamp(1rem, 3vi, 1.5rem);
+  max-inline-size: var(--content-width);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm) var(--spacing-md);
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--gutter);
+}
+
+.site-logo::before,
+.footer-brand::before {
+  content: "🥞" / "";
 }
 
 .site-logo {
-  display: inline-block;
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  font-weight: 700;
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+  justify-content: center;
+  padding-block: 0;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  font-size: clamp(1.5rem, 2vi, 2rem);
 
-  &:hover,
-  &:focus-visible {
-    opacity: 0.8;
+  &[aria-current="page"] {
+    background-color: var(--color-intro-bg);
+    border-color: var(--color-border);
   }
 }
 
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(0.5rem, 1vw, 1.5rem);
-  align-items: center;
-  flex-grow: 1;
-
+header nav {
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: clamp(0.5rem, 1vw, 1.5rem);
+    align-items: center;
+    gap: var(--spacing-sm) clamp(var(--spacing-sm), 2vi, var(--spacing-md));
     list-style: none;
-    margin: 0;
-    padding: 0;
+    padding-inline-start: 0;
   }
 
   a {
     color: var(--color-text);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 0;
-    border-block-end: 2px solid transparent;
-    transition: all 0.2s ease;
 
-    &:hover {
-      color: var(--color-primary);
-      border-block-end-color: var(--color-primary);
-    }
-
-    &.active {
-      color: var(--color-primary);
-      border-block-end-color: var(--color-primary);
+    &[aria-current="page"] {
       font-weight: 700;
     }
   }
 
-  a.btn {
-    color: var(--color-text);
-    border: none;
-    background-color: transparent;
+  .btn {
+    padding-inline: var(--gutter);
+    border: 2px solid transparent;
     border-radius: var(--border-radius);
-    padding: 0.5rem 0;
-    font-weight: 500;
-    border-block-end: 2px solid transparent;
+    background-color: var(--color-intro-bg);
+    color: var(--color-text);
 
-    &:hover {
-      color: var(--color-primary);
-      border-block-end-color: var(--color-primary);
-    }
-
-    &.active {
-      color: var(--color-primary);
-      border-block-end-color: var(--color-primary);
-      font-weight: 700;
+    &:where([aria-current="page"]) {
+      border-color: var(--color-border);
     }
   }
 }
@@ -515,37 +543,34 @@ nav {
    ================================================================ */
 
 footer {
-  background-color: var(--color-intro-bg);
+  background-color: var(--color-bg);
   border-block-start: 1px solid var(--color-border);
+  padding-block: var(--spacing-lg) var(--spacing-md);
+  padding-inline: var(--gutter);
+}
+
+.footer-inner,
+.footer-bottom {
+  max-inline-size: var(--content-width);
+  margin-inline: auto;
 }
 
 .footer-inner {
-  width: min(95%, 68.75rem);
-  padding: clamp(1.5rem, 5vi, 2.5rem) clamp(1rem, 3vi, 1.5rem);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--spacing-md);
 }
 
 .footer-section {
-  h3 {
-    font-size: 1rem;
+  h2 {
+    margin-block-end: var(--spacing-sm);
+    color: var(--color-heading);
+    font-size: 1.125rem;
     font-weight: 700;
-    color: var(--color-primary);
-    margin-block: 0 0.75rem;
   }
 
-  &:has(ul) {
-    padding-bottom: var(--spacing-lg);
-  }
-
-  p {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-  }
-
-  .footer-logo {
+  &.footer-brand::before {
+    display: block;
     margin-block-end: var(--spacing-sm);
     font-size: 2rem;
     line-height: 1;
@@ -553,38 +578,30 @@ footer {
 
   ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding-inline-start: 0;
   }
 
-  li {
-    margin-block-end: 0.5rem;
+  li + li {
+    margin-block-start: var(--spacing-sm);
   }
 
   a {
+    gap: var(--spacing-sm);
     color: var(--color-text);
-    text-decoration: none;
-    font-size: 0.9rem; /* Gör länkarna något mindre och nättare */
-    transition: color 0.2s ease;
 
-    &:hover {
-      color: var(--color-primary);
-      text-decoration: underline;
+    &::after {
+      content: "→" / "";
     }
   }
 }
 
 .footer-bottom {
-  background-color: oklch(85% 0.01 220);
+  margin-block-start: var(--spacing-md);
+  padding-block-start: var(--spacing-md);
   border-block-start: 1px solid var(--color-border);
-  padding: var(--spacing-md) clamp(1rem, 3vi, 1.5rem);
-  text-align: center;
   color: var(--color-text-muted);
   font-size: 0.875rem;
-
-  p {
-    margin: 0;
-  }
+  text-align: center;
 }
 
 /* ================================================================
@@ -594,53 +611,71 @@ footer {
 h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
   width: min(95%, 68.75rem);
   margin: 0 auto clamp(0.75rem, 2vw, 1.5rem);
-  padding-inline: clamp(1rem, 3vi, 1.5rem);
+  padding-inline: min(var(--gutter), 5%);
   font-size: 1.5rem;
 }
 
 .hero-section {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background-color: var(--color-intro-bg);
+  display: grid;
+  grid-template-areas: "hero";
+  grid-template-columns: minmax(0, 1fr);
+  min-block-size: clamp(16rem, 42vi, 28rem);
+  background-color: var(--color-heading);
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+  overflow: clip;
+
+  > :is(picture, .hero-content) {
+    grid-area: hero;
+  }
 
   picture {
-    position: absolute;
-    inset: 0;
-    display: grid;
+    display: block;
+    /* Let the grid size the picture so it can grow with the text. */
+    contain: size;
   }
 
   img {
-    width: 100%;
-    height: 100%;
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
     object-fit: cover;
   }
 
   .hero-content {
-    position: relative;
-    z-index: 10;
-    display: grid;
-    align-items: center;
-    justify-items: start;
-    padding: clamp(1.5rem, 5vw, 3rem);
-    height: 100%;
+    --hero-text-max-width: 28rem;
+    --hero-padding: clamp(var(--spacing-sm), 2vi, var(--spacing-md));
+
+    place-self: end stretch;
+    min-inline-size: 0;
+    margin: var(--gutter);
+    padding: var(--hero-padding);
+    border-radius: var(--border-radius);
+    background: linear-gradient(
+      to right,
+      var(--color-hero-text-bg) min(100%, calc(var(--hero-text-max-width) + 2 * var(--hero-padding))),
+      var(--color-hero-edge-bg)
+    );
+    color: var(--color-link);
+    overflow-wrap: anywhere;
+
+    h1,
+    p {
+      max-inline-size: var(--hero-text-max-width);
+    }
 
     h1 {
-      font-size: clamp(2rem, 3vw, 3.5rem);
-      color: var(--color-link);
       margin: 0;
-      text-shadow: 2px 2px 4px oklch(0% 0 0 / 0.5);
-      text-wrap: balance;
+      color: inherit;
+      font-size: clamp(1.75rem, 1rem + 2vi, 3.5rem);
       text-align: start;
-      max-width: 30ch;
+      text-wrap: balance;
+      overflow-wrap: anywhere;
     }
 
     p {
-      font-size: clamp(1rem, 1.2vw, 1.25rem);
-      color: var(--color-link);
-      margin: 0.5rem 0 0 0;
-      text-shadow: 1px 1px 2px oklch(0% 0 0 / 0.5);
-      max-width: 50ch;
+      margin-block-start: var(--spacing-sm);
+      font-size: clamp(1rem, 0.9rem + 0.5vi, 1.25rem);
     }
   }
 }
@@ -655,20 +690,13 @@ h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
   margin: 0;
 
   .category-tag {
-    display: inline-block;
     background-color: oklch(90% 0.02 220);
     color: var(--color-text);
     padding: 0.5rem 1rem;
     border-radius: 1.5rem;
-    text-decoration: none;
     font-weight: 500;
     border: 2px solid transparent;
     transition: all 0.2s ease;
-
-    &:hover {
-      background-color: var(--color-primary);
-      color: var(--color-link);
-    }
 
     &:focus-visible {
       border-color: var(--color-focus);
@@ -678,21 +706,16 @@ h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
 
 .recipe-cards {
   width: min(95%, 68.75rem);
-  padding: clamp(1rem, 3vi, 1.5rem);
+  padding-block: var(--gutter);
+  padding-inline: min(var(--gutter), 5%);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   gap: clamp(1rem, 2vw, 2rem);
   align-items: start;
 }
 
-/* Gemensam bas för "kort" och containrar */
-:is(.recipe-card, fieldset, .intro-text) {
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
-}
-
 .recipe-card {
+  background-color: var(--color-bg);
   overflow: hidden;
   transition: all 0.3s ease;
   display: flex;
@@ -725,24 +748,19 @@ h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
   }
 
   .card-content {
-    padding: var(--spacing-md);
+    padding-block: var(--spacing-md);
+    padding-inline: min(var(--spacing-md), 8%);
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 
-    a {
-      color: var(--color-primary);
-      text-decoration: none;
+    :where(a) {
+      color: var(--color-heading);
       font-weight: 600;
       font-size: clamp(1rem, 1.1vw, 1.25rem);
       text-wrap: balance;
-      transition: color 0.2s ease;
+      overflow-wrap: anywhere;
       margin-block-end: 0.5rem;
-
-      &:hover {
-        color: oklch(45% 0.15 25);
-        text-decoration: underline;
-      }
     }
 
     .recipe-meta {
@@ -760,12 +778,12 @@ h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
 .form-container {
   width: min(95%, 48rem);
   margin-block: clamp(2rem, 5vw, 3rem);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
+  padding-block: clamp(1.5rem, 4vw, 2.5rem);
+  padding-inline: min(clamp(1.5rem, 4vw, 2.5rem), 5%);
+  overflow-wrap: anywhere;
 
   h1 {
-    color: var(--color-primary);
     margin-block: 0 1rem;
-    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
   }
 
   .intro {
@@ -775,13 +793,16 @@ h2:is(:has(+ .categories), :has(+ .recipe-cards)) {
 }
 
 fieldset {
-  padding: var(--spacing-md);
+  min-inline-size: 0;
+  padding-block: var(--spacing-md);
+  padding-inline: min(var(--spacing-md), 6%);
   margin-block-end: var(--spacing-md);
   background-color: var(--color-intro-bg);
 
   legend {
+    max-inline-size: 100%;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--color-heading);
     padding-inline: var(--spacing-sm);
     font-size: clamp(1rem, 1.05vw, 1.1rem);
   }
@@ -816,7 +837,6 @@ label {
 
   &:focus-visible {
     border-color: var(--color-focus);
-    outline: none;
   }
 
   /* Gemensam bas för validering */
@@ -833,13 +853,24 @@ label {
 
   &:user-valid {
     border-color: var(--color-success);
-    background-image: linear-gradient(var(--color-success) 0 0);
+    &::after {
+      content: " ✓";
+      color: var(--color-success);
+    }
   }
 
   &:user-invalid {
     border-color: var(--color-error);
-    background-image: linear-gradient(var(--color-error) 0 0);
+    &::after {
+      content: " ✗";
+      color: var(--color-error);
+    }
   }
+}
+
+::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
 }
 
 textarea {
@@ -862,7 +893,7 @@ select {
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
   gap: var(--spacing-md);
 }
 
@@ -890,7 +921,7 @@ select {
   gap: 0.25rem;
 
   &::before {
-    content: "✗";
+    content: "✗" / "";
     font-weight: 700;
   }
 }
@@ -905,21 +936,22 @@ select:user-invalid ~ .error-message {
 button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: var(--color-primary);
-  color: var(--color-link);
+  background-color: var(--color-heading);
+  color: var(--color-intro-bg);
   border: 2px solid transparent;
   border-radius: var(--border-radius);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
 
-  &:hover,
+  &:is(:hover, :focus-visible):where(:enabled) {
+    background-color: var(--color-intro-bg);
+    border-color: var(--color-heading);
+    color: var(--color-heading);
+  }
+
   &:focus-visible {
-    background-color: oklch(45% 0.15 25);
     border-color: var(--color-focus);
-    outline: none;
-    box-shadow: 0 0 0 4px var(--color-focus-shadow);
   }
 
   &:disabled {
@@ -935,3 +967,15 @@ button {
 }
 
 
+
+
+
+/* Keep the focus ring visible around the recipe card. */
+.recipe-card:has(a:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+/* Form controls */
+input, select, textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}

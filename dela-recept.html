@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <!-- Canonical link for SEO -->
     <link rel="canonical" href="https://jonnywdeveloper.github.io/Pannkakor/dela-recept.html" />
 
@@ -38,10 +39,6 @@
     <title>Dela ditt recept - Pannkakor</title>
     <meta name="theme-color" content="#ffffff" />
 
-    <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-
     <!-- Preload fonts -->
     <link
       rel="preload"
@@ -57,9 +54,6 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥞</text></svg>"
     />
 
-    <!-- Link to stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-
     <script src="script.js" defer></script>
   </head>
 
@@ -68,13 +62,13 @@
 
     <header>
       <div class="header-inner">
-        <a href="index.html" class="site-logo">🥞</a>
+        <a href="index.html" class="site-logo"><span class="visually-hidden">Pannkakor, startsida</span></a>
         <nav>
           <ul>
             <li><a href="recept.html">Recept</a></li>
-            <li><a href="#about">Om sajten</a></li>
+            <li><a href="#">Om sajten</a></li>
+            <li><a href="dela-recept.html" class="btn" aria-current="page">Dela recept</a></li>
           </ul>
-          <a href="dela-recept.html" class="btn active">Dela recept <span class="visually-hidden">(nuvarande sida)</span></a>
         </nav>
       </div>
     </header>
@@ -84,7 +78,7 @@
         <h1>Dela ditt recept</h1>
         <p class="intro">Hjälp oss växa genom att skicka in ditt eget favoritrecept. Fyll i formuläret nedan och klicka på Skicka recept.</p>
 
-        <form id="recipeForm" novalidate>
+        <form id="recipeForm">
           <!-- About the recipe -->
           <fieldset>
             <legend>Om receptet</legend>
@@ -99,7 +93,7 @@
                 placeholder="T.ex. Klassiska pannkakor"
                 autocomplete="off"
               />
-              <div class="error-message">Receptets namn är obligatoriskt</div>
+              <div id="recipeName-error" class="error-message">Receptets namn är obligatoriskt</div>
             </div>
 
             <div class="form-group">
@@ -125,6 +119,7 @@
                   placeholder="30"
                   autocomplete="off"
                 />
+                <div id="timeMinutes-error" class="error-message">Ange tiden i hela minuter, minst 1 minut.</div>
               </div>
               <div class="form-group">
                 <label for="portions">Antal portioner</label>
@@ -136,6 +131,7 @@
                   placeholder="4"
                   autocomplete="off"
                 />
+                <div id="portions-error" class="error-message">Ange antal portioner som ett heltal, minst 1.</div>
               </div>
             </div>
           </fieldset>
@@ -171,7 +167,7 @@
                 required
                 placeholder="Skriv en ingrediens per rad, t.ex.&#10;2 1/2 dl vetemjöl&#10;1/2 tsk salt&#10;6 dl mjölk"
               ></textarea>
-              <div class="error-message">Ingredienser är obligatoriska</div>
+              <div id="ingredients-error" class="error-message">Ingredienser är obligatoriska</div>
             </div>
 
             <div class="form-group">
@@ -182,7 +178,7 @@
                 required
                 placeholder="Skriv instruktionerna steg för steg, en per rad"
               ></textarea>
-              <div class="error-message">Instruktioner är obligatoriska</div>
+              <div id="instructions-error" class="error-message">Instruktioner är obligatoriska</div>
             </div>
           </fieldset>
 
@@ -211,19 +207,41 @@
                 placeholder="anna@exempel.se"
                 autocomplete="email"
               />
-              <div class="error-message">Ange en giltig e-postadress</div>
+              <div id="userEmail-error" class="error-message">Ange en giltig e-postadress</div>
               <small>Vi använder din e-post bara för att kontakta dig om receptet.</small>
             </div>
           </fieldset>
 
-          <button type="submit">Skicka recept</button>
+          <button type="submit" disabled>Skicka recept</button>
         </form>
       </div>
     </main>
 
     <footer>
+      <div class="footer-inner">
+        <div class="footer-section footer-brand">
+          <p>Enkla vardagsrecept som alla kan laga.</p>
+        </div>
+        <div class="footer-section">
+          <h2>Fler recept</h2>
+          <ul>
+            <li><a href="recept.html">Klassiska pannkakor</a></li>
+            <li><a href="#">Frukost</a></li>
+            <li><a href="#">Middag</a></li>
+            <li><a href="#">Efterrätt</a></li>
+            <li><a href="#">Fika</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h2>Om sajten</h2>
+          <ul>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="#">Kontakt</a></li>
+          </ul>
+        </div>
+      </div>
       <div class="footer-bottom">
-        <p>Bilder från picsum.photos · © 2026 Ditt namn</p>
+        <p>© 2026 Pannkakor</p>
       </div>
     </footer>
   </body>

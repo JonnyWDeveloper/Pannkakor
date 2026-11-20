@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     
     <!-- Canonical link for SEO -->
     <link rel="canonical" href="https://jonnywdeveloper.github.io/Pannkakor/" />
@@ -38,10 +39,6 @@
     <title>Pannkakor - Enkla vardagsrecept</title>
     <meta name="theme-color" content="#ffffff" />
 
-    <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-
     <!-- Preload fonts -->
     <link
       rel="preload"
@@ -57,9 +54,6 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥞</text></svg>"
     />
 
-    <!-- Link to stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-
     <script src="script.js" defer></script>
   </head>
 
@@ -68,13 +62,13 @@
 
     <header>
       <div class="header-inner">
-        <a href="index.html" class="site-logo">🥞</a>
+        <a href="index.html" class="site-logo" aria-current="page"><span class="visually-hidden">Pannkakor, startsida</span></a>
         <nav>
           <ul>
             <li><a href="recept.html">Recept</a></li>
-            <li><a href="#about">Om sajten</a></li>
+            <li><a href="#">Om sajten</a></li>
+            <li><a href="dela-recept.html" class="btn">Dela recept</a></li>
           </ul>
-          <a href="dela-recept.html" class="btn">Dela recept</a>
         </nav>
       </div>
     </header>
@@ -88,7 +82,7 @@
           <img
             src="images/png/Pancake_Top.png"
             alt="Pannkaka med hallon och grädde"
-            width="1280"
+            width="1281"
             height="500"
             fetchpriority="high"
           />
@@ -100,103 +94,103 @@
       </section>
 
       <!-- Categories -->
-      <h2>Receptkategorier</h2>
+      <h2>Recept&shy;kategorier</h2>
       <ul class="categories">
-        <li><a href="#breakfast" class="category-tag">Frukost</a></li>
-        <li><a href="#dinner" class="category-tag">Middag</a></li>
-        <li><a href="#dessert" class="category-tag">Efterrätt</a></li>
-        <li><a href="#fika" class="category-tag">Fika</a></li>
+        <li><a href="#" class="category-tag">Frukost</a></li>
+        <li><a href="#" class="category-tag">Middag</a></li>
+        <li><a href="#" class="category-tag">Efterrätt</a></li>
+        <li><a href="#" class="category-tag">Fika</a></li>
       </ul>
 
       <!-- Recipe Cards Grid -->
-      <h2>Receptsamling</h2>
-      <section class="recipe-cards" aria-label="Receptsamling">
-        <article class="recipe-card">
-          <div class="card-image">
-            <picture>
-              <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
-              <source srcset="images/avif/Pancake_Top.avif" type="image/avif" />
-              <img
-                src="images/png/Pancake_Top.png"
-                alt="Pannkakor serverade med hallon och grädde"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </div>
-          <div class="card-content">
-            <a href="recept.html">Pannkakor</a>
-            <span class="recipe-meta">30 min</span>
-          </div>
-        </article>
+      <section>
+        <h2>Recept&shy;samling</h2>
+        <div class="recipe-cards">
+          <article class="recipe-card">
+            <div class="card-image">
+              <picture>
+                <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
+                <source srcset="images/avif/Pancake_Top.avif" type="image/avif" />
+                <img
+                  src="images/png/Pancake_Top.png"
+                  alt="Pannkakor serverade med hallon och grädde"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <div class="card-content">
+              <a href="recept.html">Pannkakor</a>
+              <span class="recipe-meta">30 min</span>
+            </div>
+          </article>
 
-        <article class="recipe-card">
-          <div class="card-image">
-            <picture>
-              <source srcset="images/webp/Pancake_Bottom_Left.webp" type="image/webp" />
-              <source srcset="images/avif/Pancake_Bottom_Left.avif" type="image/avif" />
-              <img
-                src="images/png/Pancake_Bottom_Left.png"
-                alt="Pannkakor med citron"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </div>
-          <div class="card-content">
-            <a href="recept.html">Receptnamn</a>
-            <span class="recipe-meta">45 min</span>
-          </div>
-        </article>
+          <article class="recipe-card">
+            <div class="card-image">
+              <picture>
+                <source srcset="images/webp/Pancake_Bottom_Left.webp" type="image/webp" />
+                <source srcset="images/avif/Pancake_Bottom_Left.avif" type="image/avif" />
+                <img
+                  src="images/png/Pancake_Bottom_Left.png"
+                  alt="Pannkakor med citron"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <div class="card-content">
+              <a href="recept.html">Receptnamn</a>
+              <span class="recipe-meta">45 min</span>
+            </div>
+          </article>
 
-        <article class="recipe-card">
-          <div class="card-image">
-            <picture>
-              <source srcset="images/webp/Pancake_Bottom_Right.webp" type="image/webp" />
-              <source srcset="images/avif/Pancake_Bottom_Right.avif" type="image/avif" />
-              <img
-                src="images/png/Pancake_Bottom_Right.png"
-                alt="Pannkakor med apelsin"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </div>
-          <div class="card-content">
-            <a href="recept.html">Receptnamn</a>
-            <span class="recipe-meta">15 min</span>
-          </div>
-        </article>
+          <article class="recipe-card">
+            <div class="card-image">
+              <picture>
+                <source srcset="images/webp/Pancake_Bottom_Right.webp" type="image/webp" />
+                <source srcset="images/avif/Pancake_Bottom_Right.avif" type="image/avif" />
+                <img
+                  src="images/png/Pancake_Bottom_Right.png"
+                  alt="Pannkakor med apelsin"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <div class="card-content">
+              <a href="recept.html">Receptnamn</a>
+              <span class="recipe-meta">15 min</span>
+            </div>
+          </article>
+        </div>
       </section>
     </main>
 
     <footer>
       <div class="footer-inner">
-        <div class="footer-section">
-          <p class="footer-logo">🥞</p>
+        <div class="footer-section footer-brand">
           <p>Enkla vardagsrecept som alla kan laga.</p>
         </div>
-
         <div class="footer-section">
-          <h3>Fler recept</h3>
+          <h2>Fler recept</h2>
           <ul>
-            <li><a href="#breakfast">Frukost</a></li>
-            <li><a href="#dinner">Middag</a></li>
-            <li><a href="#dessert">Efterrätt</a></li>
-            <li><a href="#fika">Fika</a></li>
+            <li><a href="recept.html">Klassiska pannkakor</a></li>
+            <li><a href="#">Frukost</a></li>
+            <li><a href="#">Middag</a></li>
+            <li><a href="#">Efterrätt</a></li>
+            <li><a href="#">Fika</a></li>
           </ul>
         </div>
-
         <div class="footer-section">
-          <h3>Om sajten</h3>
+          <h2>Om sajten</h2>
           <ul>
-            <li><a href="#about">Om oss</a></li>
-            <li><a href="#contact">Kontakt</a></li>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="#">Kontakt</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>Bilder från picsum.photos · © 2026 Ditt namn</p>
+        <p>© 2026 Pannkakor</p>
       </div>
     </footer>
   </body>

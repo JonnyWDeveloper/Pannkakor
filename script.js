@@ -22,37 +22,44 @@ document.querySelectorAll('.ingredients input[type="checkbox"]:checked').forEach
     checkbox.closest('li')?.classList.add('checked');
 });
 
-// Handle form submission - prevent popups, allow page reload when valid
+// Validate the demo form locally and reload after a valid submission.
 const recipeForm = document.getElementById('recipeForm');
 if (recipeForm) {
-    // Swedish messages matching the visual .error-message text. setCustomValidity()
-    // replaces the browser's default wording; reportValidity() then shows and
-    // announces it via the browser's native, screen-reader-accessible validation UI
-    // (no ARIA needed - this is built into the Constraint Validation API).
-    const customMessages = {
-        recipeName: 'Receptets namn är obligatoriskt',
-        ingredients: 'Ingredienser är obligatoriska',
-        instructions: 'Instruktioner är obligatoriska',
-        userEmail: 'Ange en giltig e-postadress',
-    };
+    const submitButton = recipeForm.querySelector('button[type="submit"]');
 
-    // Object.entries(customMessages).forEach(([name, message]) => {
-    //     const field = recipeForm.elements[name];
-    //     if (!field) return;
-    //     field.addEventListener('invalid', () => field.setCustomValidity(message));
-    //     field.addEventListener('input', () => field.setCustomValidity(''));
-    // });
+    function updateFieldError(field) {
+        const error = field.nextElementSibling;
+        if (!error?.matches('.error-message[id]')) return;
 
-    recipeForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!recipeForm.checkValidity()) {
-            recipeForm.reportValidity();
+        if (field.matches(':user-invalid')) {
+            field.setAttribute('aria-describedby', error.id);
+        } else {
+            field.removeAttribute('aria-describedby');
+        }
+    }
+
+    recipeForm.addEventListener('input', (event) => updateFieldError(event.target));
+    recipeForm.addEventListener('focusout', (event) => updateFieldError(event.target));
+
+    recipeForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const isValid = recipeForm.checkValidity();
+
+        for (const field of recipeForm.elements) {
+            updateFieldError(field);
+        }
+
+        if (!isValid) {
+            recipeForm.querySelector(':is(input, select, textarea):invalid')?.focus();
             return;
         }
+
         setTimeout(() => {
             recipeForm.reset();
             location.reload();
         }, 100);
     });
-}
 
+    recipeForm.noValidate = true;
+    submitButton.disabled = false;
+}
