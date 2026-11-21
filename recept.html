@@ -77,6 +77,16 @@
             <li><a href="dela-recept.html" class="btn">Dela recept</a></li>
           </ul>
         </nav>
+        <details class="mobile-menu">
+          <summary>Meny</summary>
+          <nav>
+            <ul>
+              <li><a href="recept.html" class="current-page">Recept<span class="visually-hidden"> (nuvarande sida)</span></a></li>
+              <li><a href="#">Om sajten</a></li>
+              <li><a href="dela-recept.html" class="btn">Dela recept</a></li>
+            </ul>
+          </nav>
+        </details>
       </div>
     </header>
 
@@ -85,12 +95,11 @@
       <div class="recipe-layout">
         <!-- Left column: Hero image -->
         <div class="recipe-image-column">
-          <!-- WebP is preferred, followed by AVIF and PNG fallbacks for browsers that do not support the earlier formats. -->
+          <!-- Use WebP with a PNG fallback. -->
           <!-- LCP (Largest Contentful Paint) measures how long it takes for the largest visible content to appear.
              That is why the hero image has high priority. -->
           <picture>
             <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
-            <source srcset="images/avif/Pancake_Top.avif" type="image/avif" />
             <img
               class="hero-image"
               src="images/png/Pancake_Top.png"
@@ -185,19 +194,14 @@
       </div>
 
       <!-- Serving suggestions with two images -->
-      <section class="serving-suggestions recipe-content">
+      <section class="serving-suggestions">
         <h2>Serverings&shy;förslag</h2>
         <div class="gallery-grid">
           <figure>
-            <!-- WebP is preferred, with AVIF and PNG as fallbacks.
-                loading="lazy" defers loading; decoding="async" decodes without blocking the page. -->
             <picture>
-              <source
-                srcset="images/webp/Pancake_Bottom_Left.webp"
-                type="image/webp"
-              />
+              <source srcset="images/webp/Pancake_Bottom_Left.webp" type="image/webp" />
               <img
-                src="images/webp/Pancake_Bottom_Left.webp"
+                src="images/png/Pancake_Bottom_Left.png"
                 alt="Pannkakor med citron, hallon och grädde."
                 width="800"
                 height="600"
@@ -208,15 +212,10 @@
             <figcaption>Pannkakor med citron, hallon och grädde.</figcaption>
           </figure>
           <figure>
-            <!-- WebP is preferred, with AVIF and PNG as fallbacks.
-                loading="lazy" defers loading; decoding="async" decodes without blocking the page. -->
             <picture>
-              <source
-                srcset="images/webp/Pancake_Bottom_Right.webp"
-                type="image/webp"
-              />
+              <source srcset="images/webp/Pancake_Bottom_Right.webp" type="image/webp" />
               <img
-                src="images/webp/Pancake_Bottom_Right.webp"
+                src="images/png/Pancake_Bottom_Right.png"
                 alt="Vikta pannkakor med apelsin, honung och grädde."
                 width="800"
                 height="600"

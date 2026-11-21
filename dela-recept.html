@@ -70,6 +70,16 @@
             <li><a href="dela-recept.html" class="btn" aria-current="page">Dela recept</a></li>
           </ul>
         </nav>
+        <details class="mobile-menu">
+          <summary>Meny</summary>
+          <nav>
+            <ul>
+              <li><a href="recept.html">Recept</a></li>
+              <li><a href="#">Om sajten</a></li>
+              <li><a href="dela-recept.html" class="btn current-page">Dela recept<span class="visually-hidden"> (nuvarande sida)</span></a></li>
+            </ul>
+          </nav>
+        </details>
       </div>
     </header>
 
@@ -78,7 +88,8 @@
         <h1>Dela ditt recept</h1>
         <p class="intro">Hjälp oss växa genom att skicka in ditt eget favoritrecept. Fyll i formuläret nedan och klicka på Skicka recept.</p>
 
-        <form id="recipeForm">
+        <!-- Keep demo submissions local and show validation feedback inline. -->
+        <form id="recipeForm" class="recipe-form" method="dialog" novalidate>
           <!-- About the recipe -->
           <fieldset>
             <legend>Om receptet</legend>
@@ -93,13 +104,13 @@
                 placeholder="T.ex. Klassiska pannkakor"
                 autocomplete="off"
               />
-              <div id="recipeName-error" class="error-message">Receptets namn är obligatoriskt</div>
+              <div class="error-message">Receptets namn är obligatoriskt</div>
             </div>
 
             <div class="form-group">
               <label for="category">Kategori</label>
               <select id="category" name="category">
-                <option value="">Välj kategori</option>
+                <option value="">Välj…</option>
                 <option value="breakfast">Frukost</option>
                 <option value="lunch">Lunch</option>
                 <option value="dinner">Middag</option>
@@ -119,7 +130,7 @@
                   placeholder="30"
                   autocomplete="off"
                 />
-                <div id="timeMinutes-error" class="error-message">Ange tiden i hela minuter, minst 1 minut.</div>
+                <div class="error-message">Ange tiden i hela minuter, minst 1 minut.</div>
               </div>
               <div class="form-group">
                 <label for="portions">Antal portioner</label>
@@ -131,7 +142,7 @@
                   placeholder="4"
                   autocomplete="off"
                 />
-                <div id="portions-error" class="error-message">Ange antal portioner som ett heltal, minst 1.</div>
+                <div class="error-message">Ange antal portioner som ett heltal, minst 1.</div>
               </div>
             </div>
           </fieldset>
@@ -160,25 +171,30 @@
             <legend>Receptet</legend>
 
             <div class="form-group">
-              <label for="ingredients" class="required">Ingredienser</label>
+              <label for="ingredients">
+                <span class="required">Ingredienser</span>
+                <small>Skriv en ingrediens per rad.</small>
+              </label>
               <textarea
                 id="ingredients"
                 name="ingredients"
                 required
-                placeholder="Skriv en ingrediens per rad, t.ex.&#10;2 1/2 dl vetemjöl&#10;1/2 tsk salt&#10;6 dl mjölk"
+                placeholder="2 1/2 dl vetemjöl&#10;1/2 tsk salt&#10;6 dl mjölk"
               ></textarea>
-              <div id="ingredients-error" class="error-message">Ingredienser är obligatoriska</div>
+              <div class="error-message">Ingredienser är obligatoriska</div>
             </div>
 
             <div class="form-group">
-              <label for="instructions" class="required">Gör så här</label>
+              <label for="instructions">
+                <span class="required">Gör så här</span>
+                <small>Skriv instruktionerna steg för steg, en per rad.</small>
+              </label>
               <textarea
                 id="instructions"
                 name="instructions"
                 required
-                placeholder="Skriv instruktionerna steg för steg, en per rad"
               ></textarea>
-              <div id="instructions-error" class="error-message">Instruktioner är obligatoriska</div>
+              <div class="error-message">Instruktioner är obligatoriska</div>
             </div>
           </fieldset>
 
@@ -204,15 +220,22 @@
                 id="userEmail"
                 name="userEmail"
                 required
+                pattern="[^@\s]+@[^.@\s]+(?:\.[^.@\s]+)+"
                 placeholder="anna@exempel.se"
                 autocomplete="email"
               />
-              <div id="userEmail-error" class="error-message">Ange en giltig e-postadress</div>
+              <div class="error-message">Ange en e-postadress med fullständig domän, till exempel anna@exempel.se.</div>
               <small>Vi använder din e-post bara för att kontakta dig om receptet.</small>
             </div>
           </fieldset>
 
-          <button type="submit" disabled>Skicka recept</button>
+          <div class="recipe-form-actions">
+            <button type="submit">Skicka recept</button>
+            <a class="recipe-submit-link" href="#recipe-ready">Skicka recept</a>
+            <p id="recipe-ready" class="recipe-form-ready" tabindex="-1">Receptet är klart att skickas.</p>
+            <p class="recipe-form-feedback">Kontrollera de markerade fälten.</p>
+            <a class="recipe-form-start" href="#recipeForm">Gå till formulärets början</a>
+          </div>
         </form>
       </div>
     </main>

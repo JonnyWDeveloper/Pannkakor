@@ -1,6 +1,6 @@
 /*
  * For GET requests within the page's scope, the latest file is fetched from the
- * network first and saved to pannkakor-cache-v2. If the network fails, the cached
+ * network first and saved to the site's cache. If the network fails, the cached
  * file is used, with index.html as a fallback for page navigations. This keeps
  * visitors up to date without requiring a cache version change for every release.
  *
@@ -14,7 +14,7 @@
  */
 
 const CACHE_PREFIX = 'pannkakor-cache-';
-const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const CACHE_NAME = `${CACHE_PREFIX}v3`;
 const LEGACY_CACHE_NAME = 'pankakor-cache-v1';
 const urlsToCache = [
   './',
@@ -26,9 +26,6 @@ const urlsToCache = [
   './images/webp/Pancake_Top.webp',
   './images/webp/Pancake_Bottom_Left.webp',
   './images/webp/Pancake_Bottom_Right.webp',
-  './images/avif/Pancake_Top.avif',
-  './images/avif/Pancake_Bottom_Left.avif',
-  './images/avif/Pancake_Bottom_Right.avif',
   './images/png/Pancake_Top.png',
   './images/png/Pancake_Bottom_Left.png',
   './images/png/Pancake_Bottom_Right.png'
@@ -59,12 +56,11 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(
     (async () => {
-      const cache = await caches.open(CACHE_NAME);
-
       try {
         const response = await fetch(event.request);
         if (response.ok && response.type === 'basic') {
           try {
+            const cache = await caches.open(CACHE_NAME);
             await cache.put(event.request, response.clone());
           } catch {
             // A cache error should not prevent a successful network response.
@@ -72,16 +68,18 @@ self.addEventListener('fetch', event => {
         }
         return response;
       } catch {
-        const cachedResponse = await cache.match(event.request);
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        if (event.request.mode === 'navigate') {
-          const cachedPage = await cache.match('./index.html');
-          if (cachedPage) {
-            return cachedPage;
+        try {
+          const cache = await caches.open(CACHE_NAME);
+          const cachedResponse = await cache.match(event.request);
+          if (cachedResponse) {
+            return cachedResponse;
           }
+
+          if (event.request.mode === 'navigate') {
+            return (await cache.match('./index.html')) ?? Response.error();
+          }
+        } catch {
+          // Cache storage can be unavailable offline.
         }
 
         return Response.error();
