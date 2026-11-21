@@ -479,7 +479,7 @@ header {
 }
 
 /* Let the header scroll away when the URL targets main, as the skip link does. */
-body:has(> main:target) > header {
+body:has(> main:target, > main > .recipe-checked-location:target) > header {
   position: static;
 }
 
@@ -1046,16 +1046,23 @@ textarea {
 }
 
 .recipe-form {
-  /* Show the link and ready message as soon as the form is valid. */
+  /* A valid form can navigate to the confirmation without sending field values. */
   &:invalid :is(.recipe-submit-link, .recipe-form-ready),
-  &:valid button[type="submit"] {
+  &:valid :is(button[type="submit"], .recipe-form-confirmation),
+  &:has(:is(input, select, textarea):is(:user-valid, :user-invalid)) .recipe-form-confirmation {
     display: none;
   }
 
-  /* Show a reminder near the button when a field has a visible error. */
-  &:not(:has(:user-invalid)) :is(.recipe-form-feedback, .recipe-form-start) {
+  /* Show the reminder only while the form is invalid and a field shows an error. */
+  &:not(:invalid:has(:user-invalid)) :is(.recipe-form-feedback, .recipe-form-start) {
     display: none;
   }
+}
+
+/* Alternate the page URL so every confirmation reloads the form. */
+body:where(:has(.recipe-checked-location:target)) .recipe-base-link,
+body:where(:not(:has(.recipe-checked-location:target))) .recipe-checked-link {
+  display: none;
 }
 
 .recipe-form-actions {
@@ -1071,10 +1078,21 @@ textarea {
   color: var(--color-error);
 }
 
-.recipe-form-ready {
+.recipe-form-ready,
+.recipe-form-confirmation {
   color: var(--color-success);
   font-size: 1.2rem;
   font-weight: 700;
+}
+
+.recipe-form-confirmation {
+  &:not(:target, :has(:target)) {
+    display: none;
+  }
+
+  &::before {
+    content: "✓ " / "";
+  }
 }
 
 .recipe-form-start {

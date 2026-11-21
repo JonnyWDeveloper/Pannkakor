@@ -58,7 +58,8 @@
   </head>
 
   <body>
-    <a class="skip-link" href="#main-content">Hoppa till huvudinnehållet</a>
+    <a class="skip-link recipe-base-link" href="#main-content">Hoppa till huvudinnehållet</a>
+    <a class="skip-link recipe-checked-link" href="#main-content-checked">Hoppa till huvudinnehållet</a>
 
     <header>
       <div class="header-inner">
@@ -84,12 +85,14 @@
     </header>
 
     <main id="main-content" class="recipe-container" tabindex="-1">
+      <div id="main-content-checked" class="recipe-checked-location" tabindex="-1"></div>
       <div class="form-container">
         <h1>Dela ditt recept</h1>
         <p class="intro">Hjälp oss växa genom att skicka in ditt eget favoritrecept. Fyll i formuläret nedan och klicka på Skicka recept.</p>
 
-        <!-- Keep demo submissions local and show validation feedback inline. -->
+        <!-- Show validation feedback inline instead of in native popups. -->
         <form id="recipeForm" class="recipe-form" method="dialog" novalidate>
+          <div id="recipe-form-checked" class="recipe-checked-location" tabindex="-1"></div>
           <!-- About the recipe -->
           <fieldset>
             <legend>Om receptet</legend>
@@ -220,7 +223,7 @@
                 id="userEmail"
                 name="userEmail"
                 required
-                pattern="[^@\s]+@[^.@\s]+(?:\.[^.@\s]+)+"
+                pattern="[^@\s]+@[^.@\s]+(?:\.[^.@\s]+)*\.(?:[A-Za-z]{2,}|[Xx][Nn]--[A-Za-z0-9\-]+)"
                 placeholder="anna@exempel.se"
                 autocomplete="email"
               />
@@ -231,10 +234,13 @@
 
           <div class="recipe-form-actions">
             <button type="submit">Skicka recept</button>
-            <a class="recipe-submit-link" href="#recipe-ready">Skicka recept</a>
-            <p id="recipe-ready" class="recipe-form-ready" tabindex="-1">Receptet är klart att skickas.</p>
+            <a class="recipe-submit-link recipe-base-link" href="dela-recept.html?kontrollerat#recipe-confirmation">Skicka recept</a>
+            <a class="recipe-submit-link recipe-checked-link" href="dela-recept.html#recipe-confirmation-again">Skicka recept</a>
+            <p class="recipe-form-ready">Receptet är klart att skickas.</p>
+            <p id="recipe-confirmation" class="recipe-form-confirmation recipe-checked-location" tabindex="-1"><span id="recipe-confirmation-again" tabindex="-1">Tack! Vi har tagit emot ditt recept.</span></p>
             <p class="recipe-form-feedback">Kontrollera de markerade fälten.</p>
-            <a class="recipe-form-start" href="#recipeForm">Gå till formulärets början</a>
+            <a class="recipe-form-start recipe-base-link" href="#recipeForm">Gå till formulärets början</a>
+            <a class="recipe-form-start recipe-checked-link" href="#recipe-form-checked">Gå till formulärets början</a>
           </div>
         </form>
       </div>
