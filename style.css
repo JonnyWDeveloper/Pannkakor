@@ -100,8 +100,7 @@ textarea {
   text-decoration: none;
 }
 
-a:any-link:hover,
-.recipe-form-start {
+a:any-link:hover {
   background-color: var(--color-intro-bg);
   color: var(--color-text);
 
@@ -115,7 +114,7 @@ a:any-link:hover,
 /* Give these links and the menu toggle the same minimum tap size. */
 :where(
   .skip-link, .site-logo, header nav a, .mobile-menu summary,
-  .footer-section a, .category-tag, .card-content a, .recipe-form-start
+  .footer-section a, .category-tag, .card-content a
 ) {
   display: inline-flex;
   align-items: center;
@@ -479,7 +478,7 @@ header {
 }
 
 /* Let the header scroll away when the URL targets main, as the skip link does. */
-body:has(> main:target, > main > .recipe-checked-location:target) > header {
+body:has(> main:target) > header {
   position: static;
 }
 
@@ -679,8 +678,7 @@ footer {
   }
 }
 
-.footer-section a,
-.recipe-form-start {
+.footer-section a {
   gap: var(--spacing-sm);
   color: var(--color-text);
 
@@ -1045,63 +1043,29 @@ textarea {
   display: flex;
 }
 
-.recipe-form {
-  /* A valid form can navigate to the confirmation without sending field values. */
-  &:invalid :is(.recipe-submit-link, .recipe-form-ready),
-  &:valid :is(button[type="submit"], .recipe-form-confirmation),
-  &:has(:is(input, select, textarea):is(:user-valid, :user-invalid)) .recipe-form-confirmation {
-    display: none;
-  }
 
-  /* Show the reminder only while the form is invalid and a field shows an error. */
-  &:not(:invalid:has(:user-invalid)) :is(.recipe-form-feedback, .recipe-form-start) {
-    display: none;
-  }
-}
 
-/* Alternate the page URL so every confirmation reloads the form. */
-body:where(:has(.recipe-checked-location:target)) .recipe-base-link,
-body:where(:not(:has(.recipe-checked-location:target))) .recipe-checked-link {
+/* Confirmation shown via :target after a valid submit. */
+.recipe-confirmation {
   display: none;
-}
+  margin-block-start: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-intro-bg);
 
-.recipe-form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-sm) calc(2 * var(--spacing-sm));
-}
-
-.recipe-form-feedback {
-  flex: auto;
-  text-align: center;
-  color: var(--color-error);
-}
-
-.recipe-form-ready,
-.recipe-form-confirmation {
-  color: var(--color-success);
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.recipe-form-confirmation {
-  &:not(:target, :has(:target)) {
-    display: none;
+  &:target {
+    display: block;
   }
 
-  &::before {
-    content: "✓ " / "";
+  a {
+    color: var(--color-heading);
+    font-weight: 600;
+    text-decoration: underline;
   }
 }
 
-.recipe-form-start {
-  margin-inline-start: auto;
-  font-size: 1rem;
-}
-
-button,
-.recipe-submit-link {
+button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--color-heading);
