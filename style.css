@@ -103,17 +103,12 @@ textarea {
 a:any-link:hover {
   background-color: var(--color-intro-bg);
   color: var(--color-text);
-
-  /* Give the keyboard focus ring priority over the link outline. */
-  &:not(:focus-visible) {
-    outline: 1px solid var(--color-border);
-    outline-offset: 1px;
-  }
+  box-shadow: 0 2px 4px var(--color-shadow);
 }
 
 /* Give these links and the menu toggle the same minimum tap size. */
 :where(
-  .skip-link, .site-logo, header nav a, .mobile-menu summary,
+  .skip-link, .site-logo, header nav a,
   .footer-section a, .category-tag, .card-content a
 ) {
   display: inline-flex;
@@ -199,11 +194,11 @@ main {
   border: 2px solid var(--color-heading);
   transition: inset-block-start 0.2s ease;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
 
   &:focus-visible {
     inset-block-start: var(--spacing-sm);
-    clip: auto;
+    clip-path: none;
   }
 }
 
@@ -461,25 +456,11 @@ h2 {
    ================================================================ */
 
 header {
-  /* Show the hamburger at 40rem or less. */
-  --menu-breakpoint: 40rem;
-
   background-color: var(--color-bg);
   border-block-end: 1px solid var(--color-border);
-  /* Allow the wrapping fallback menu to scroll away. */
-  position: var(--header-position, static);
+  position: sticky;
   inset-block-start: 0;
   z-index: 999;
-
-  /* Use a delay of 0s up to the breakpoint and -1s above it.
-     That leaves the paused animation at its first or last frame. */
-  animation: switch-header-menu 1s paused both
-    calc(-1s * max(0, sign(100vi - var(--menu-breakpoint))));
-}
-
-/* Let the header scroll away when the URL targets main, as the skip link does. */
-body:has(> main:target) > header {
-  position: static;
 }
 
 .header-inner {
@@ -494,27 +475,9 @@ body:has(> main:target) > header {
   gap: var(--spacing-sm) clamp(var(--spacing-sm), 2vi, var(--spacing-md));
   padding-block: var(--spacing-sm);
   padding-inline: var(--header-gutter);
-
-  /* Fall back to the regular links if the width calculation is unsupported. */
-  > nav {
-    display: var(--desktop-menu-display, block);
-  }
 }
 
-/* Show the hamburger in the first frame and the regular links in the last. */
-@keyframes switch-header-menu {
-  from {
-    --header-position: sticky;
-    --desktop-menu-display: none;
-    --mobile-menu-display: block;
-  }
 
-  to {
-    --header-position: sticky;
-    --desktop-menu-display: block;
-    --mobile-menu-display: none;
-  }
-}
 
 /* Draw a pancake with empty alternative text so it stays decorative. */
 .site-logo::before,
@@ -548,8 +511,8 @@ header nav {
   a {
     color: var(--color-text);
 
-    /* Bold the current page in either version of the menu. */
-    &:is([aria-current="page"], .current-page) {
+    /* Bold the current page in the menu. */
+    &[aria-current="page"] {
       font-weight: 700;
     }
   }
@@ -562,70 +525,13 @@ header nav {
     color: var(--color-text);
 
     /* Add a border when the current page link uses the button style. */
-    &:where([aria-current="page"], .current-page) {
+    &:where([aria-current="page"]) {
       border-color: var(--color-border);
     }
   }
 }
 
-/* Show the hamburger in the narrow layout and align it at the far end. */
-.mobile-menu {
-  display: var(--mobile-menu-display, none);
-  margin-inline-start: auto;
 
-  > summary {
-    gap: var(--spacing-sm);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--color-intro-bg);
-    }
-
-    /* Draw the three hamburger lines with two borders and a stripe in the middle. */
-    &::before {
-      content: "";
-      inline-size: 1em;
-      block-size: 0.75em;
-      border-block: 2px solid currentColor;
-      background: linear-gradient(currentColor, currentColor)
-        center / 100% 2px no-repeat;
-    }
-  }
-
-  /* Place the open menu below the header and let it scroll on short screens. */
-  > nav {
-    position: absolute;
-    inset-block-start: 100%;
-    inset-inline-end: var(--header-gutter);
-    inline-size: max-content;
-    max-inline-size: calc(100% - 2 * var(--header-gutter));
-    max-block-size: 60dvb;
-    overflow: auto;
-    padding: var(--spacing-sm);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    background-color: var(--color-bg);
-
-    ul {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    a {
-      display: flex;
-      overflow-wrap: anywhere;
-    }
-  }
-}
-
-/* Hide the dropdown when keyboard focus reaches the page content.
-   Its links stay in the tab order so Shift+Tab can return to the menu. */
-body:has(> main:focus-visible, > :is(main, footer) :focus-visible) .mobile-menu > nav {
-  opacity: 0;
-  pointer-events: none;
-}
 
 /* ================================================================
    FOOTER
@@ -794,7 +700,7 @@ h2:has(+ .categories, + .recipe-cards) {
     border-radius: 1.5rem;
     font-weight: 500;
     border: 2px solid transparent;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 
     &:focus-visible {
       border-color: var(--color-focus);
@@ -816,7 +722,7 @@ h2:has(+ .categories, + .recipe-cards) {
 .recipe-card {
   background-color: var(--color-bg);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
 
@@ -934,7 +840,6 @@ label {
 }
 
 /* Share the border and shadow transitions across form controls. */
-.form-group > :is(input, select, textarea),
 input,
 select,
 textarea {
@@ -957,27 +862,19 @@ textarea {
     border-color: var(--color-focus);
   }
 
-  /* Reserve room for validation feedback in text fields. */
-  &:is(:user-valid, :user-invalid):not(select) {
+  /* Green checkmark and room for it inside valid text fields (not the dropdown). */
+  &:user-valid:not(select) {
     padding-inline-end: 2.5rem;
-  }
-
-  /* Give fields the success color once the browser marks them valid after interaction. */
-  &:user-valid {
     border-color: var(--color-success);
-    &::after {
-      content: " ✓";
-      color: var(--color-success);
-    }
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%232e7d32' d='M6.5 11.5 3.5 8.5 2 10l4.5 4.5L15 6l-1.5-1.5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.1rem;
   }
 
-  /* Give fields the error color once the browser marks them invalid after interaction. */
-  &:user-invalid {
+  /* Red border when invalid (not the dropdown). */
+  &:user-invalid:not(select) {
     border-color: var(--color-error);
-    &::after {
-      content: " ✗";
-      color: var(--color-error);
-    }
   }
 }
 
@@ -1039,7 +936,7 @@ textarea {
 }
 
 /* Show the error immediately after the field that triggered it. */
-:user-invalid + .error-message {
+.form-group > :user-invalid + .error-message {
   display: flex;
 }
 
