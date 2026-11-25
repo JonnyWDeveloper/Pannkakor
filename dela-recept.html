@@ -71,6 +71,8 @@
             <li><a href="dela-recept.html" class="btn" aria-current="page">Dela recept</a></li>
           </ul>
         </nav>
+        <input type="checkbox" id="theme-toggle" class="visually-hidden" />
+        <label for="theme-toggle" class="theme-toggle"><span class="visually-hidden">Växla tema</span></label>
       </div>
     </header>
 
@@ -211,11 +213,10 @@
                 id="userEmail"
                 name="userEmail"
                 required
-                pattern="[^@\s]+@[^.@\s]+(?:\.[^.@\s]+)*\.(?:[A-Za-z]{2,}|[Xx][Nn]--[A-Za-z0-9\-]+)"
                 placeholder="anna@exempel.se"
                 autocomplete="email"
               />
-              <div class="error-message">Ange en e-postadress med fullständig domän, till exempel anna@exempel.se.</div>
+              <div class="error-message">Ange en giltig e-postadress, till exempel anna@exempel.se.</div>
               <small>Vi använder din e-post bara för att kontakta dig om receptet.</small>
             </div>
           </fieldset>

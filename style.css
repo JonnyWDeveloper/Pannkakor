@@ -22,7 +22,7 @@
    - clamp(MIN, IDEAL, MAX) for fluid scaling
    - min()/max() for intrinsic sizing
    - vw/vi for viewport-relative values
-   - No @media queries used
+   - No media queries used
    
    Accessibility:
    - WCAG AAA level focus indicators
@@ -33,11 +33,12 @@
 /* Unit strategy: rem for scalable spacing and dimensions; px for crisp line thickness. */
 /* Design tokens: All colors, spacing, and dimensions are defined as variables for easy maintenance */
 :root {
+  color-scheme: light;
   /* Design Tokens */
-  --content-width: 68.75rem;
+  --content-width: 75rem;
   /* Scale side spacing with the viewport, between 1rem and 1.5rem. */
   --gutter: clamp(1rem, 3vi, 1.5rem);
-  /* Color palette - OKLCH system for perceptually uniform colors */
+  /* Color palette - OKLCH system for perceptually uniform colors (light defaults). */
   --color-heading: oklch(32.769% 0.02555 220.54);
   --color-page-bg: oklch(85.052% 0.01633 233.06);
   --color-text: oklch(15% 0.02 220);
@@ -64,10 +65,37 @@
   --spacing-sm: 0.375rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2.5rem;
+  /* Extra spacing tokens for values previously hardcoded. */
+  --spacing-2xs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm-plus: 0.75rem;
+  --spacing-base: 1rem;
   --min-target-size: 44px;
   /* Border radius - used consistently throughout */
   --border-radius: 0.25rem;
 }
+
+/* CSS-only dark theme: when the header checkbox is checked, override the tokens.
+   :has() reacts to the checkbox state so no JavaScript is needed. */
+:root:has(#theme-toggle:checked) {
+  color-scheme: dark;
+    --color-heading: oklch(92% 0.01 220);
+    --color-page-bg: oklch(20% 0.02 220);
+    --color-text: oklch(95% 0.01 220);
+    --color-text-secondary: oklch(90% 0.02 220);
+    --color-text-muted: oklch(78% 0.02 220);
+    --color-bg: oklch(14% 0.015 220);
+    --color-intro-bg: oklch(26% 0.02 220);
+    --color-category-bg: oklch(30% 0.02 220);
+    --color-focus: oklch(70% 0.22 280);
+    --color-link: oklch(95% 0.01 220);
+    --color-success: oklch(72% 0.2 140);
+    --color-error: oklch(68% 0.18 25);
+    --color-border: oklch(70% 0 0);
+    --color-hover: oklch(100% 0 0 / 6%);
+    --color-shadow: oklch(0% 0 0 / 40%);
+    --color-focus-shadow: oklch(70% 0.22 280 / 0.4);
+  }
 
 /* Show a fallback font while Open Sans loads. */
 @font-face {
@@ -106,7 +134,8 @@ a:any-link:hover {
   box-shadow: 0 2px 4px var(--color-shadow);
 }
 
-/* Give these links and the menu toggle the same minimum tap size. */
+/* Give these links and the menu toggle the same minimum tap size.
+   Logical properties (min-inline-size/min-block-size) keep it direction-agnostic. */
 :where(
   .skip-link, .site-logo, header nav a,
   .footer-section a, .category-tag, .card-content a
@@ -128,7 +157,7 @@ html {
 }
 
 img {
-  max-width: 100%;
+  max-inline-size: 100%;
 }
 
 /* Remove default margins and let more specific component rules set their own. */
@@ -148,7 +177,7 @@ body {
   background-color: var(--color-page-bg);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-block-size: 100vh;
   color: var(--color-text);
   font-family:
     "Open Sans",
@@ -205,8 +234,8 @@ main {
 /* Screen reader only - content hidden visually but announced by assistive technology */
 .visually-hidden {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  inline-size: 1px;
+  block-size: 1px;
   overflow: hidden;
   clip-path: inset(500%);
   white-space: nowrap;
@@ -220,26 +249,36 @@ main {
 .recipe-container {
   background-color: var(--color-bg);
   /* Use 95% of the available width, capped at the shared content width. */
-  width: min(95%, var(--content-width));
+  inline-size: min(95%, var(--content-width));
   margin-block: clamp(2rem, 5vw, 3.75rem);
   border-inline: 1px solid var(--color-border);
   border-radius: var(--border-radius);
 
+  /* Nesting: .hero-image is scoped inside .recipe-container (no need to repeat it). */
   .hero-image {
     display: block;
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
     aspect-ratio: 1280 / 700;
     object-fit: cover;
     border-radius: var(--border-radius);
   }
 }
 
+/* Shared fluid grid: one definition; each component sets its minimum via --grid-min.
+   :where() keeps specificity at 0 so component rules stay easy to override. */
+:where(
+  .recipe-layout, .recipe-grid, .gallery-grid,
+  .footer-inner, .recipe-cards, .form-row
+) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min, 15rem)), 1fr));
+}
+
 /* Put the recipe image and details side by side when they fit. */
 .recipe-layout {
-  display: grid;
   /* Each column needs 20rem or 45%, whichever is larger, capped at the grid's width. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(20rem, 45%)), 1fr));
+  --grid-min: max(20rem, 45%);
   gap: clamp(1.5rem, 3vw, 2.5rem);
   padding: clamp(1.5rem, 5vh, 2.5rem) var(--gutter);
 }
@@ -248,17 +287,18 @@ main {
   display: flex;
   align-items: stretch;
 
+  /* Nested rule: picture is scoped to .recipe-image-column. */
   picture {
     display: block;
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
     overflow: hidden;
     box-shadow: 0 0.125rem 0.625rem var(--color-shadow);
   }
 }
 
 h1 {
-  margin-block: 0 0.75rem;
+  margin-block: 0 var(--spacing-sm-plus);
   color: var(--color-heading);
   font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
   text-align: center;
@@ -274,6 +314,7 @@ h2 {
   flex-direction: column;
   gap: clamp(var(--spacing-sm), 2vi, var(--spacing-md));
 
+  /* Nested h1 override, only inside the recipe content column. */
   h1 {
     margin-block-end: 0;
     font-size: clamp(1.5rem, 1.15rem + 1vi, 2rem);
@@ -301,9 +342,10 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: var(--spacing-2xs);
     text-align: center;
 
+    /* Nested dt/dd inside each fact item. */
     dt {
       font-weight: 600;
       font-size: 0.875rem;
@@ -323,12 +365,12 @@ h2 {
 
 /* Give the serving suggestions fluid padding and balance the heading. */
 .serving-suggestions {
-  width: 100%;
+  inline-size: 100%;
   padding-block: clamp(1.5rem, 5vi, 2.5rem);
   padding-inline: min(var(--gutter), 5%);
 
   h2 {
-    margin-block-end: 0.75rem;
+    margin-block-end: var(--spacing-sm-plus);
     font-size: 1.5rem;
     text-wrap: balance;
   }
@@ -344,7 +386,7 @@ h2 {
   background-color: var(--color-intro-bg);
 
   p {
-    max-width: 65ch;
+    max-inline-size: 65ch;
     color: var(--color-text-secondary);
     margin: 0;
   }
@@ -353,8 +395,7 @@ h2 {
 /* Span the full recipe layout and stack ingredients and instructions when space runs out. */
 .recipe-grid {
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  --grid-min: 18rem;
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
@@ -379,6 +420,7 @@ h2 {
     margin-block: 0;
     padding: var(--spacing-sm);
 
+    /* Nested input: the checkbox stays fixed while the label text can shrink. */
     input {
       flex-shrink: 0;
     }
@@ -414,13 +456,10 @@ h2 {
   }
 }
 
-/* Fit as many columns as possible with a minimum that scales with the viewport. */
+/* Fit as many columns as possible with a minimum that scales with the viewport.
+   clamp() inside minmax() makes the column minimum fluid (no media queries). */
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(100%, clamp(15rem, 30vw, 25rem)), 1fr)
-  );
+  --grid-min: clamp(15rem, 30vw, 25rem);
   gap: var(--spacing-md);
 
   picture {
@@ -431,7 +470,7 @@ h2 {
 
   img {
     display: block;
-    width: 100%;
+    inline-size: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
     border-radius: var(--border-radius);
@@ -446,7 +485,7 @@ h2 {
 
   figcaption {
     display: block;
-    margin-block-start: 0.75rem;
+    margin-block-start: var(--spacing-sm-plus);
     color: var(--color-text-muted);
   }
 }
@@ -552,8 +591,7 @@ footer {
 
 /* Fit as many 15rem columns as possible, or one smaller column on narrow screens. */
 .footer-inner {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  --grid-min: 15rem;
   gap: var(--spacing-md);
 }
 
@@ -607,10 +645,11 @@ footer {
    HOME PAGE - HERO & CATEGORIES
    ================================================================ */
 
-/* Style headings immediately followed by the categories or recipe cards. */
+/* :has() with the adjacent-sibling combinator (+): style an h2 only when the
+   very next element is the categories or the recipe cards. */
 h2:has(+ .categories, + .recipe-cards) {
-  width: min(95%, var(--content-width));
-  margin: 0 auto clamp(0.75rem, 2vw, 1.5rem);
+  inline-size: min(95%, var(--content-width));
+  margin: 0 auto clamp(var(--spacing-sm-plus), 2vw, var(--spacing-md));
   padding-inline: min(var(--gutter), 5%);
   font-size: 1.5rem;
 }
@@ -626,7 +665,8 @@ h2:has(+ .categories, + .recipe-cards) {
   border-start-end-radius: inherit;
   overflow: clip;
 
-  /* Put the picture and text in the same cell. The text comes later and appears on top. */
+  /* Put the picture and text in the same cell. The text comes later and appears on top.
+     :is() groups the two selectors; grid-area shares one cell so they overlap. */
   > :is(picture, .hero-content) {
     grid-area: hero;
   }
@@ -654,7 +694,8 @@ h2:has(+ .categories, + .recipe-cards) {
     margin: var(--gutter);
     padding: var(--hero-padding);
     border-radius: var(--border-radius);
-    /* Keep the overlay darkest behind the text and fade toward the right edge. */
+    /* Keep the overlay darkest behind the text and fade toward the right edge.
+       min() caps the solid part so the gradient never exceeds the text width. */
     background: linear-gradient(
       to right,
       var(--color-hero-text-bg) min(100%, calc(var(--hero-text-max-width) + 2 * var(--hero-padding))),
@@ -688,7 +729,7 @@ h2:has(+ .categories, + .recipe-cards) {
   padding: clamp(1.5rem, 4vw, 2.5rem) var(--gutter);
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  gap: clamp(var(--spacing-sm-plus), 1.5vw, var(--spacing-md));
   justify-content: center;
   list-style: none;
   margin: 0;
@@ -696,7 +737,7 @@ h2:has(+ .categories, + .recipe-cards) {
   .category-tag {
     background-color: var(--color-category-bg);
     color: var(--color-text);
-    padding: 0.5rem 1rem;
+    padding: var(--spacing-xs) var(--spacing-base);
     border-radius: 1.5rem;
     font-weight: 500;
     border: 2px solid transparent;
@@ -710,11 +751,10 @@ h2:has(+ .categories, + .recipe-cards) {
 
 /* Fit as many 15rem columns as possible, or one smaller column on narrow screens. */
 .recipe-cards {
-  width: min(95%, var(--content-width));
+  inline-size: min(95%, var(--content-width));
   padding-block: var(--gutter);
   padding-inline: min(var(--gutter), 5%);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  --grid-min: 15rem;
   gap: clamp(1rem, 2vw, 2rem);
   align-items: start;
 }
@@ -737,8 +777,8 @@ h2:has(+ .categories, + .recipe-cards) {
     background-color: var(--color-intro-bg);
 
     img {
-      width: 100%;
-      height: 100%;
+      inline-size: 100%;
+      block-size: 100%;
       object-fit: cover;
       transition: transform 0.3s ease;
     }
@@ -749,7 +789,8 @@ h2:has(+ .categories, + .recipe-cards) {
     }
   }
 
-  /* Add outer padding only to cards without an image. */
+  /* Add outer padding only to cards without an image.
+     :not(:has(...)) targets cards that do NOT contain .card-image. */
   &:not(:has(.card-image)) {
     padding: var(--spacing-md);
   }
@@ -761,14 +802,14 @@ h2:has(+ .categories, + .recipe-cards) {
     display: flex;
     flex-direction: column;
 
-    /* Match the link without adding to the selector's specificity. */
+    /* :where() keeps specificity at 0 so the link style is easy to override. */
     :where(a) {
       color: var(--color-heading);
       font-weight: 600;
       font-size: clamp(1rem, 1.1vw, 1.25rem);
       text-wrap: balance;
       overflow-wrap: anywhere;
-      margin-block-end: 0.5rem;
+      margin-block-end: var(--spacing-xs);
     }
 
     .recipe-meta {
@@ -785,7 +826,7 @@ h2:has(+ .categories, + .recipe-cards) {
    ================================================================ */
 
 .form-container {
-  width: min(95%, 48rem);
+  inline-size: min(95%, 48rem);
   margin-block: clamp(2rem, 5vw, 3rem);
   padding-block: clamp(1.5rem, 4vw, 2.5rem);
   /* Reduce side padding on very narrow screens to make room for the fields. */
@@ -793,7 +834,7 @@ h2:has(+ .categories, + .recipe-cards) {
   overflow-wrap: anywhere;
 
   h1 {
-    margin-block: 0 1rem;
+    margin-block: 0 var(--spacing-base);
   }
 
   .intro {
@@ -821,11 +862,12 @@ fieldset {
 
 label {
   display: block;
-  margin-block: 1rem 0.5rem;
+  margin-block: var(--spacing-base) var(--spacing-xs);
   color: var(--color-text);
   font-weight: 500;
 
-  /* Make the whole radio label a tappable row and center its contents vertically. */
+  /* Make the whole radio label a tappable row and center its contents vertically.
+     :has(> input[type="radio"]) matches labels that directly contain a radio. */
   &:has(> input[type="radio"]) {
     display: flex;
     align-items: center;
@@ -835,7 +877,7 @@ label {
 
   input[type="checkbox"],
   input[type="radio"] {
-    margin-inline-end: 0.5rem;
+    margin-inline-end: var(--spacing-xs);
   }
 }
 
@@ -846,11 +888,12 @@ textarea {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Style fields directly in a form group. The radio buttons sit inside labels. */
+/* Style fields directly in a form group. The radio buttons sit inside labels.
+   :is(input, select, textarea) groups the three field types in one selector. */
 .form-group > :is(input, select, textarea) {
-  width: 100%;
-  padding: 0.75rem;
-  margin-block-end: 0.5rem;
+  inline-size: 100%;
+  padding: var(--spacing-sm-plus);
+  margin-block-end: var(--spacing-xs);
   border: 2px solid var(--color-border);
   border-radius: var(--border-radius);
   font-family: inherit;
@@ -864,7 +907,7 @@ textarea {
 
   /* Green checkmark and room for it inside valid text fields (not the dropdown). */
   &:user-valid:not(select) {
-    padding-inline-end: 2.5rem;
+    padding-inline-end: var(--spacing-lg);
     border-color: var(--color-success);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%232e7d32' d='M6.5 11.5 3.5 8.5 2 10l4.5 4.5L15 6l-1.5-1.5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -885,25 +928,24 @@ textarea {
 
 textarea {
   resize: block;
-  min-height: 6rem;
+  min-block-size: 6rem;
 }
 
 /* Give the dropdown text more room when the form is narrow. */
 .form-group > select {
-  padding-inline: min(0.75rem, 5%);
+  padding-inline: min(var(--spacing-sm-plus), 5%);
 }
 
 /* Place fields side by side when 12rem columns fit, and stack them when space is tight. */
 .form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  --grid-min: 12rem;
   gap: var(--spacing-md);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-xs);
 
   label {
     margin-block: 0;
@@ -923,10 +965,10 @@ textarea {
 .error-message {
   color: var(--color-error);
   font-size: 0.875rem;
-  margin-block-start: -0.25rem;
+  margin-block-start: calc(-1 * var(--spacing-2xs));
   display: none;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--spacing-2xs);
 
   /* Draw a decorative cross before the error text. */
   &::before {
@@ -951,20 +993,37 @@ textarea {
   border-radius: var(--border-radius);
   background-color: var(--color-intro-bg);
 
+  /* :target shows the confirmation when the URL hash matches #mottaget. */
   &:target {
     display: block;
   }
 
   a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    min-inline-size: var(--min-target-size);
+    min-block-size: var(--min-target-size);
+    padding: var(--spacing-sm);
     color: var(--color-heading);
     font-weight: 600;
-    text-decoration: underline;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+
+    /* Decorative arrow, same as the footer links (no underline). */
+    &::after {
+      content: "→" / "";
+    }
+
+    &:hover {
+      background-color: var(--color-bg);
+    }
   }
 }
 
 button {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
+  padding: var(--spacing-sm-plus) var(--spacing-md);
   background-color: var(--color-heading);
   color: var(--color-intro-bg);
   border: 2px solid transparent;
@@ -973,7 +1032,8 @@ button {
   font-size: 1rem;
   cursor: pointer;
 
-  /* Apply hover and focus styles only to enabled buttons. */
+  /* Apply hover and focus styles only to enabled buttons.
+     :is() groups the states; :where(:not(:disabled)) adds the enabled check at 0 specificity. */
   &:is(:hover, :focus-visible):where(:not(:disabled)) {
     background-color: var(--color-intro-bg);
     border-color: var(--color-heading);
@@ -991,16 +1051,42 @@ button {
   }
 }
 
+.theme-toggle {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--min-target-size);
+  min-block-size: var(--min-target-size);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg);
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: var(--spacing-xs) var(--spacing-sm);
+
+  /* The label shows a moon in light mode (pure CSS, no JS). */
+  &::before {
+    content: "🌙";
+  }
+
+  &:hover {
+    background-color: var(--color-intro-bg);
+  }
+}
+
+/* Show the sun when dark mode is active (checkbox checked). */
+:root:has(#theme-toggle:checked) .theme-toggle::before {
+  content: "☀️";
+}
+
 .required::after {
   content: " *";
   color: var(--color-error);
 }
 
-
-
-
-
-/* Outline the whole recipe card when a link inside it gets visible focus. */
+/* :has(a:focus-visible) outlines the whole card when its link is focused via keyboard. */
 .recipe-card:has(a:focus-visible) {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
