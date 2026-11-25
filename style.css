@@ -505,7 +505,7 @@ header {
   font-size: clamp(1.5rem, 2vi, 2rem);
 
   /* Highlight the current home link with its background color. */
-  &[aria-current="page"] {
+  &.is-active {
     border: none;
     background-color: var(--color-intro-bg);
   }
@@ -525,7 +525,7 @@ header nav {
     color: var(--color-text);
 
     /* Bold the current page in the menu. */
-    &[aria-current="page"] {
+    &.is-active {
       font-weight: 700;
     }
   }
@@ -538,7 +538,7 @@ header nav {
     color: var(--color-text);
 
     /* Add a border when the current page link uses the button style. */
-    &:where([aria-current="page"]) {
+    &:where(.is-active) {
       border-color: var(--color-border);
     }
   }
@@ -742,6 +742,7 @@ h2:has(+ .categories, + .recipe-cards) {
   }
 
   .card-image {
+    display: block;
     aspect-ratio: 4 / 3;
     overflow: hidden;
     background-color: var(--color-intro-bg);
