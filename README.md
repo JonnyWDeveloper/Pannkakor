@@ -8,8 +8,6 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 - `recept.html` – recipe page with facts, ingredients, and steps
 - `dela-recept.html` – form for submitting your own recipe
 - `style.css` – design system, tokens, reset, and all styling
-- `script.js` – registers the service worker; added as a result of Lighthouse performance testing (enables the PWA/offline score)
-- `sw.js` – service worker for caching/offline; added as a result of Lighthouse performance testing (network-first cache so the site stays fast and works offline)
 
 ## Requirements and how they are met
 
@@ -70,7 +68,7 @@ The 60–30–10 rule comes from interior design, where it helps balance the col
 
 | Requirement | Met |
 | --- | --- |
-| Avoid JS except `sw.js` and `script.js` (Lighthouse) | Yes – `script.js` only registers the service worker |
+| HTML and CSS only | Yes |
 | No `@media` | Yes |
 | Theme toggle without `@media` or JS | Yes – checkbox + `:has()` |
 
