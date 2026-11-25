@@ -64,7 +64,7 @@ The 60–30–10 rule comes from interior design, where it helps balance the col
 | --- | --- |
 | Every field has a linked `label`, grouped with `fieldset`/`legend` | Yes |
 | Correct `type`, `required` where needed | Yes |
-| Clear visual feedback for valid/invalid fields (`:user-valid` / `:user-invalid`) | Yes |
+| Clear visual feedback for valid/invalid fields | Yes – `:user-valid` / `:user-invalid` |
 
 ### Other
 
@@ -72,7 +72,7 @@ The 60–30–10 rule comes from interior design, where it helps balance the col
 | --- | --- |
 | Avoid JS except `sw.js` and `script.js` (Lighthouse) | Yes – `script.js` only registers the service worker |
 | No `@media` | Yes |
-| Theme toggle without `@media` or JS (checkbox + `:has()`) | Yes |
+| Theme toggle without `@media` or JS | Yes – checkbox + `:has()` |
 
 ## WCAG AAA
 
@@ -89,7 +89,7 @@ Full WCAG AAA conformance is **not claimed** (AAA is a high bar and requires man
 
 ### Minimal ARIA
 
-A course rule was to use **as little ARIA as possible** and rely on semantic HTML instead. The only ARIA used is `aria-current="page"` in the menu to mark the active page; everything else (landmarks, headings, lists, labels, `alt`, `figure`/`figcaption`) is native HTML. No `role`, `aria-label`, or live regions are added.
+A rule was to use **as little ARIA as possible** and rely on semantic HTML instead. The only ARIA used is `aria-current="page"` in the menu to mark the active page; everything else (landmarks, headings, lists, labels, `alt`, `figure`/`figcaption`) is native HTML. No `role`, `aria-label`, or live regions are added.
 
 Not claimed for AAA: muted/secondary text (`--color-text-muted`, oklch 40%) and some non-text contrast may not reach 7:1, and AAA requires manual verification with a screen reader (NVDA/Narrator) and expert review.
 
