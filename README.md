@@ -24,7 +24,7 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Keyboard navigation | Skip link, theme toggle, and ingredient checkboxes tested in Chrome |
 | WAVE | AIM score 10/10 on all three pages, as reported. The start page showed 0 errors, 0 contrast errors, and 3 redundant-link alerts. |
 | Screen reader | Manual testing pending |
-| Lighthouse | All three pages scored 100 / 100 / 100 / 100 and 2/2 on both mobile and desktop. |
+| Lighthouse | All three pages scored **100 / 100 / 100 / 100** (mobile and desktop). These are Lighthouse’s four scored categories: **Performance** (fast load via fluid `clamp()` typography, sized images, no render-blocking JS), **Accessibility** (landmarks, labels, contrast, skip link), **Best Practices** (no deprecated attributes, images with `alt`), and **SEO** (title, meta description, canonical link, crawlable links). |
 | CSS reset with source comment | Yes – comment with source (Andy Bell) |
 | Colors, fonts, and spacing in variables (tokens), no hardcoded colors | Yes – `:root` with `--color-*`, `--spacing-*` |
 | Unit strategy (rem/px) and 200% text size without clipping | Yes – rem for scale, px for borders; `clamp()` |
