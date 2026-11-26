@@ -619,18 +619,17 @@ h2:has(+ .categories, + .recipe-cards) {
   grid-template-areas: "hero";
   /* Let the single column shrink below the natural width of its contents. */
   grid-template-columns: minmax(0, 1fr);
-  /* Match the original panorama where space allows and leave room for text on narrow screens. */
   inline-size: 100%;
   aspect-ratio: 1281 / 500;
   min-block-size: 16rem;
   background-color: var(--color-heading);
   border-start-start-radius: inherit;
   border-start-end-radius: inherit;
-  overflow: clip;
+  overflow: hidden;
 
   /* Put the image and text in the same cell. The text comes later and appears on top,
      so they overlap inside the same grid cell. */
-  > .hero-content {
+  > :is(img, .hero-content) {
     grid-area: hero;
   }
 
@@ -646,21 +645,21 @@ h2:has(+ .categories, + .recipe-cards) {
     --hero-text-max-width: 28rem;
     --hero-padding: clamp(var(--spacing-sm), 2vi, var(--spacing-md));
 
-    /* Align the text box to the bottom and stretch it across the cell. */
+    /* Align text box to bottom of the hero cell, stretching across the cell. */
     place-self: end stretch;
+    inline-size: 100%;
     min-inline-size: 0;
-    margin: var(--gutter);
     padding: var(--hero-padding);
     border-radius: var(--border-radius);
-    /* Keep the overlay more opaque behind the text and fade toward the right edge.
-       Cap the first color stop at the width of the overlay box. */
+    color: var(--color-hero-text);
+    overflow-wrap: anywhere;
+
+    /* Gradient overlay: dark behind the text, fading to transparent at right edge. */
     background: linear-gradient(
       to right,
       var(--color-hero-text-bg) min(100%, calc(var(--hero-text-max-width) + 2 * var(--hero-padding))),
       var(--color-hero-edge-bg)
     );
-    color: var(--color-hero-text);
-    overflow-wrap: anywhere;
 
     h1,
     p {
