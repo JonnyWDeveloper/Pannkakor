@@ -51,7 +51,8 @@
     <link
       rel="preload"
       as="image"
-      href="images/webp/Pancake_Top.webp"
+      imagesrcset="images/webp/Pancake_Top_768.webp 768w, images/webp/Pancake_Top.webp 1281w"
+      imagesizes="(min-width: 47rem) min(35rem, 45vw), calc(95vw - 2 * clamp(1rem, 3vw, 1.5rem) - 2px)"
       type="image/webp"
       fetchpriority="high"
     />
@@ -86,7 +87,17 @@
       <!-- Main content wrapper with two-column layout -->
       <div class="recipe-layout">
         <!-- Left column: Hero image -->
-        <img class="recipe-image" src="images/webp/Pancake_Top.webp" alt="En tunn pannkaka vikt med hallon och grädde" width="1281" height="500" fetchpriority="high" decoding="async" />
+        <img
+          class="recipe-image"
+          src="images/webp/Pancake_Top.webp"
+          srcset="images/webp/Pancake_Top_768.webp 768w, images/webp/Pancake_Top.webp 1281w"
+          sizes="(min-width: 47rem) min(35rem, 45vw), calc(95vw - 2 * clamp(1rem, 3vw, 1.5rem) - 2px)"
+          alt="En tunn pannkaka vikt med hallon och grädde"
+          width="1281"
+          height="500"
+          fetchpriority="high"
+          decoding="async"
+        />
 
         <!-- Right column: Recipe content -->
         <div class="recipe-content-column">

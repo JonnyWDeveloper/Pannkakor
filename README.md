@@ -48,7 +48,7 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Typography/spacing scale with `clamp()` | Yes |
 | No `@media` | Yes |
 | Modern colors (`oklch()`) | OKLCH tokens define the light and dark palettes. The course target is WCAG AA contrast, including the hero text over the image. |
-| Images – WebP-only, fluid sizing | The three pages reuse three WebP files through `<img>` elements. CSS uses `object-fit: cover` and aspect ratios to fit images to their layouts. |
+| Images – WebP-only, fluid sizing | The pages share three original WebP images. The recipe hero also offers a 768-pixel-wide variant through `srcset`, with the same candidates in its preload. CSS uses `object-fit: cover` and aspect ratios to fit images to their layouts. |
 
 #### 60–30–10 color guideline
 
