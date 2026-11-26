@@ -248,20 +248,17 @@ main {
   padding: clamp(1.5rem, 5vh, 2.5rem) var(--gutter);
 }
 
-.recipe-image {
+  .recipe-image {
+  /* Recipe hero image: fills its column with the correct aspect ratio. */
+  display: block;
   align-self: center;
   inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 16 / 9;
   overflow: clip;
   border-radius: var(--border-radius);
   box-shadow: 0 0.125rem 0.625rem var(--color-shadow);
-
-  img {
-    display: block;
-    inline-size: 100%;
-    block-size: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
+  object-fit: cover;
 }
 
 h1 {
@@ -430,19 +427,16 @@ h2 {
   --grid-min: clamp(15rem, 30vw, 25rem);
   gap: var(--spacing-md);
 
-  picture {
-    display: block;
-    overflow: clip;
-    border-radius: var(--border-radius);
-    background-color: var(--color-intro-bg);
-    box-shadow: 0 0.125rem 0.625rem var(--color-shadow);
-  }
-
   img {
+    /* Serving-suggestion image: fills its grid cell. */
     display: block;
     inline-size: 100%;
     block-size: auto;
     aspect-ratio: 4 / 3;
+    overflow: clip;
+    border-radius: var(--border-radius);
+    background-color: var(--color-intro-bg);
+    box-shadow: 0 0.125rem 0.625rem var(--color-shadow);
     object-fit: cover;
     transition: transform 0.3s ease;
 
@@ -634,18 +628,14 @@ h2:has(+ .categories, + .recipe-cards) {
   border-start-end-radius: inherit;
   overflow: clip;
 
-  /* Put the image and text in the same cell. The text comes later and appears on top.
-     :is() groups the two selectors; grid-area shares one cell so they overlap. */
-  > :is(picture, .hero-content) {
+  /* Put the image and text in the same cell. The text comes later and appears on top,
+     so they overlap inside the same grid cell. */
+  > .hero-content {
     grid-area: hero;
   }
 
-  picture {
-    display: block;
-    contain: size;
-  }
-
   img {
+    /* Hero image: fills its grid cell and scales with object-fit. */
     display: block;
     inline-size: 100%;
     block-size: 100%;
@@ -744,20 +734,18 @@ h2:has(+ .categories, + .recipe-cards) {
   }
 
   .card-image {
+    /* Recipe card image: fills the card with the correct aspect ratio. */
     display: block;
+    inline-size: 100%;
+    block-size: 100%;
     aspect-ratio: 4 / 3;
     overflow: hidden;
     background-color: var(--color-intro-bg);
-
-    img {
-      inline-size: 100%;
-      block-size: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
+    object-fit: cover;
+    transition: transform 0.3s ease;
 
     /* Zoom the image within its frame on hover. */
-    &:hover img {
+    &:hover {
       transform: scale(1.05);
     }
   }
