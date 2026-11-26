@@ -50,6 +50,7 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Typography/spacing scale with `clamp()` | Yes |
 | No `@media` | Yes |
 | Modern colors (`oklch()`), good contrast (WCAG AA) | OKLCH palette. Contrast spot checks pass AA thresholds in both themes. |
+| Images – WebP-only, fluid sizing | All images are `.webp` served as single `` tags (no `<picture>`, no PNG fallbacks). `object-fit: cover` + `aspect-ratio` scale them responsively without media queries. |
 
 #### 60–30–10 color guideline
 
