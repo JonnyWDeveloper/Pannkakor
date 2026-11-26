@@ -6,8 +6,9 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 
 - `index.html` – start page with hero, categories, and recipe cards
 - `recept.html` – recipe page with facts, ingredients, and steps
-- `dela-recept.html` – form for submitting your own recipe
+- `dela-recept.html` – demo form with native browser validation
 - `style.css` – design system, tokens, reset, and all styling
+- `ProjectRules.clinerules` – course requirements and project rules
 
 ## Requirements and how they are met
 
@@ -20,14 +21,11 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Recipe details use suitable elements (`dl` for facts, checkbox list for ingredients, `ol` for steps) | Yes – `dl` for facts, `ul` with checkbox labels, `ol` for steps |
 | Images with thoughtful `alt` text (`alt=""` for decorative) | Yes – hero/cards have descriptive alt, serving images have `alt=""` |
 | `figure` and `figcaption` where a visible caption adds value | Yes – serving suggestions |
-| Menu shows the active page with `aria-current="page"` | Yes |
-| Keyboard navigation | Skip link, theme toggle, and ingredient checkboxes tested in Chrome |
-| WAVE | AIM score 10/10 on all three pages, as reported. The start page showed 0 errors, 0 contrast errors, and 3 redundant-link alerts. |
-| Screen reader | Manual testing pending |
-| Lighthouse | All three pages scored **100 / 100 / 100 / 100** (mobile and desktop). These are Lighthouse’s four scored categories: **Performance** (fast load via fluid `clamp()` typography, sized images, no render-blocking JS), **Accessibility** (landmarks, labels, contrast, skip link), **Best Practices** (no deprecated attributes, images with `alt`), and **SEO** (title, meta description, canonical link, crawlable links). |
+| Current page in the header | The homepage logo marks the homepage, and the corresponding menu link marks each of the other two pages. |
+| Keyboard navigation | Skip link, visible focus styles, and native links and form controls |
 | CSS reset with source comment | Yes – comment with source (Andy Bell) |
 | Colors, fonts, and spacing in variables (tokens), no hardcoded colors | Yes – `:root` with `--color-*`, `--spacing-*` |
-| Unit strategy (rem/px) and 200% text size without clipping | Yes – rem for scale, px for borders; `clamp()` |
+| Unit strategy (rem/px) | Rem for scalable typography and spacing, px for borders and minimum target sizes |
 | Clear selectors without `!important`, e.g. `li:has(:checked)` | Yes |
 | Clear `:hover` and `:focus-visible` states | Yes |
 
@@ -49,8 +47,8 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Recipe cards change columns with `repeat(auto-fit, minmax(...))` without media queries | Yes |
 | Typography/spacing scale with `clamp()` | Yes |
 | No `@media` | Yes |
-| Modern colors (`oklch()`), good contrast (WCAG AA) | OKLCH palette. Contrast spot checks pass AA thresholds in both themes. |
-| Images – WebP-only, fluid sizing | All images are `.webp` served as single `` tags (no `<picture>`, no PNG fallbacks). `object-fit: cover` + `aspect-ratio` scale them responsively without media queries. |
+| Modern colors (`oklch()`) | OKLCH tokens define the light and dark palettes. The course target is WCAG AA contrast, including the hero text over the image. |
+| Images – WebP-only, fluid sizing | The three pages reuse three WebP files through `<img>` elements. CSS uses `object-fit: cover` and aspect ratios to fit images to their layouts. |
 
 #### 60–30–10 color guideline
 
@@ -68,37 +66,31 @@ The 60–30–10 rule comes from interior design, where it helps balance the col
 | Correct `type`, `required` where needed | Yes |
 | Clear visual feedback for valid/invalid fields | Yes – `:user-valid` / `:user-invalid` |
 
+When the demo form passes validation, the browser loads the same page with empty fields and displays a confirmation. The GET request carries no recipe or contact field values. The site stores no submissions.
+
 ### Other
 
 | Requirement | Met |
 | --- | --- |
 | HTML and CSS only | Yes |
-| No `@media` | Yes |
-| Theme toggle without `@media` or JS | Yes – checkbox + `:has()` |
+| Theme toggle | A native checkbox and CSS `:has()` switch themes on the current page. |
 
-## WCAG AAA
+## ARIA policy
 
-Full WCAG AAA conformance is **not claimed** (AAA is a high bar and requires manual screen-reader and expert review). The site targets WCAG AA as the course requires, and it meets several AAA-level techniques. The "how" column states exactly how each criterion is satisfied in the code:
+`aria-current="page"` is the only ARIA attribute allowed. Use it on the header link for the current page. Use native HTML elements and labels for landmarks, controls, and accessible names.
 
-| AAA technique | How it is met (in the code) |
-| --- | --- |
-| 2.4.13 Focus Appearance (AAA) | Every interactive element gets `:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; box-shadow: 0 0 0 4px var(--color-focus-shadow) }` – a thick, high-contrast ring that is easy to see (style.css). |
-| 2.5.5 Target Size (AAA, 44×44) | `--min-target-size: 44px` is applied via `min-inline-size`/`min-block-size` to links, the theme toggle, and radio rows, so every tap target is at least 44×44 CSS px. |
-| 1.4.6 Contrast Enhanced (AAA, 7:1) | Body text uses `--color-text` (oklch 15% lightness) on `--color-bg` (oklch 99%) – a very dark-on-very-light pair that exceeds 7:1; headings use `--color-heading` (oklch 32%) which is also >7:1. |
-| 1.4.8 Visual Presentation (AAA) | Typography is fluid via `clamp()` with `line-height: 1.5`; there are no fixed heights, text wraps with `overflow-wrap`, and the layout reflows at 200% zoom without clipping. |
-| 2.1.1 / 2.1.2 Keyboard (A/AAA) | A skip link is the first focusable element, the tab order follows the DOM, and `:focus-visible` makes the focused control obvious; there are no keyboard traps. |
-| 3.3.1 / 3.3.2 Labels (A/AAA) | Every form field has a linked `label` (`for`/`id`), fields are grouped with `fieldset`/`legend`, and errors are shown inline via `:user-invalid + .error-message`. |
+## Previously reported checks
 
-### Minimal ARIA
-
-A rule was to use **as little ARIA as possible** and rely on semantic HTML instead. The only ARIA used is `aria-current="page"` in the menu to mark the active page; everything else (landmarks, headings, lists, labels, `alt`, `figure`/`figcaption`) is native HTML. No `role`, `aria-label`, or live regions are added.
-
-Not claimed for AAA: muted/secondary text (`--color-text-muted`, oklch 40%) and some non-text contrast may not reach 7:1, and AAA requires manual verification with a screen reader (NVDA/Narrator) and expert review.
+- **Chrome keyboard checks.** Skip link, theme toggle, and ingredient checkboxes.
+- **WAVE.** AIM score 10/10 on all three pages. The homepage reported zero errors, zero contrast errors, and three redundant-link alerts.
+- **Lighthouse.** All three pages scored 100 in Performance, Accessibility, Best Practices, and SEO on mobile and desktop.
+- **Screen reader.** Manual testing is pending.
 
 ## How to test
 
 1. Open `index.html` in a browser (or use Live Server in VS Code).
 2. Test keyboard navigation (Tab) and that the skip link works.
-3. Test 200% zoom in the browser.
-4. Toggle the theme with the moon/sun control in the header (pure CSS, no JS).
-5. Run WAVE or Lighthouse for accessibility/performance.
+3. Check the layout at narrow and wide widths and check that text remains visible at 200% text size.
+4. Switch themes with the moon/sun control in the header and check the hero text contrast in both themes.
+5. Submit the form with invalid and then valid example values. Check the error messages, the cleared fields, and the confirmation.
+6. Run WAVE and Lighthouse and check navigation and form feedback with a screen reader.
