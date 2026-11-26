@@ -14,7 +14,7 @@
     />
     <meta
       property="og:description"
-      content="Skicka in ditt eget recept till vår receptsamling."
+      content="Prova att fylla i formuläret med ditt eget recept."
     />
     <meta property="og:type" content="website" />
     <meta
@@ -33,7 +33,7 @@
 
     <meta
       name="description"
-      content="Dela ditt recept med oss och bli en del av vår receptsamling av enkla vardagsrecept."
+      content="Prova formuläret för att dela ett recept. Inga uppgifter skickas eller sparas av sajten."
     />
 
     <title>Dela ditt recept - Pannkakor</title>
@@ -67,21 +67,20 @@
           <ul>
             <li><a href="recept.html">Recept</a></li>
             <li><a href="#">Om sajten</a></li>
-            <li><a href="dela-recept.html" class="btn is-active">Dela recept</a></li>
+            <li><a href="dela-recept.html" class="btn" aria-current="page">Dela recept</a></li>
           </ul>
         </nav>
         <input type="checkbox" id="theme-toggle" class="visually-hidden" />
-        <label for="theme-toggle" class="theme-toggle"><span class="visually-hidden">Växla tema</span></label>
+        <label for="theme-toggle" class="theme-toggle"><span class="visually-hidden">Mörkt tema</span></label>
       </div>
     </header>
 
     <main id="main-content" class="recipe-container" tabindex="-1">
       <div class="form-container">
         <h1>Dela ditt recept</h1>
-        <p class="intro">Hjälp oss växa genom att skicka in ditt eget favoritrecept. Fyll i formuläret nedan och klicka på Skicka recept.</p>
+        <p class="intro">Prova formuläret med exempeluppgifter. När formuläret är giltigt laddas sidan om och fälten töms.</p>
 
-        <!-- Show validation feedback inline instead of in native popups. -->
-        <form id="recipeForm" action="dela-recept.html#mottaget" method="post">
+        <form action="dela-recept.html#mottaget" method="get">
           <!-- About the recipe -->
           <fieldset>
             <legend>Om receptet</legend>
@@ -91,7 +90,6 @@
               <input
                 type="text"
                 id="recipeName"
-                name="recipeName"
                 required
                 placeholder="T.ex. Klassiska pannkakor"
                 autocomplete="off"
@@ -101,7 +99,7 @@
 
             <div class="form-group">
               <label for="category">Kategori</label>
-              <select id="category" name="category">
+              <select id="category">
                 <option value="">Välj…</option>
                 <option value="breakfast">Frukost</option>
                 <option value="lunch">Lunch</option>
@@ -117,7 +115,6 @@
                 <input
                   type="number"
                   id="timeMinutes"
-                  name="timeMinutes"
                   min="1"
                   placeholder="30"
                   autocomplete="off"
@@ -129,7 +126,6 @@
                 <input
                   type="number"
                   id="portions"
-                  name="portions"
                   min="1"
                   placeholder="4"
                   autocomplete="off"
@@ -144,15 +140,15 @@
             <legend>Svårighetsgrad</legend>
             <div class="form-group">
               <label>
-                <input type="radio" name="difficulty" value="easy" checked />
+                <input type="radio" form="difficulty-options" name="difficulty" value="easy" checked />
                 Lätt
               </label>
               <label>
-                <input type="radio" name="difficulty" value="medium" />
+                <input type="radio" form="difficulty-options" name="difficulty" value="medium" />
                 Medel
               </label>
               <label>
-                <input type="radio" name="difficulty" value="hard" />
+                <input type="radio" form="difficulty-options" name="difficulty" value="hard" />
                 Svår
               </label>
             </div>
@@ -169,7 +165,6 @@
               </label>
               <textarea
                 id="ingredients"
-                name="ingredients"
                 required
                 placeholder="2 1/2 dl vetemjöl&#10;1/2 tsk salt&#10;6 dl mjölk"
               ></textarea>
@@ -183,7 +178,6 @@
               </label>
               <textarea
                 id="instructions"
-                name="instructions"
                 required
               ></textarea>
               <div class="error-message">Instruktioner är obligatoriska</div>
@@ -199,7 +193,6 @@
               <input
                 type="text"
                 id="userName"
-                name="userName"
                 placeholder="Förnamn Efternamn"
                 autocomplete="name"
               />
@@ -210,23 +203,24 @@
               <input
                 type="email"
                 id="userEmail"
-                name="userEmail"
                 required
                 placeholder="anna@exempel.se"
                 autocomplete="email"
               />
               <div class="error-message">Ange en giltig e-postadress, till exempel anna@exempel.se.</div>
-              <small>Vi använder din e-post bara för att kontakta dig om receptet.</small>
             </div>
           </fieldset>
 
           <button type="submit">Skicka recept</button>
         </form>
 
-        <div id="mottaget" class="recipe-confirmation">
-          <p>Tack! Vi har tagit emot ditt recept.</p>
-          <a href="#recipeForm">Skicka in ett nytt recept</a>
-        </div>
+        <!-- Give the radios a shared name without including their value in the GET request. -->
+        <form id="difficulty-options"></form>
+
+        <section id="mottaget" class="recipe-confirmation" tabindex="-1">
+          <h2>Tack! Vi har tagit emot ditt recept.</h2>
+          <a href="dela-recept.html">Skicka in ett nytt recept</a>
+        </section>
       </div>
     </main>
 

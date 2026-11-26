@@ -72,13 +72,13 @@
         <a href="index.html" class="site-logo"><span class="visually-hidden">Pannkakor, startsida</span></a>
         <nav>
           <ul>
-            <li><a href="recept.html" class="is-active">Recept</a></li>
+            <li><a href="recept.html" aria-current="page">Recept</a></li>
             <li><a href="#">Om sajten</a></li>
             <li><a href="dela-recept.html" class="btn">Dela recept</a></li>
           </ul>
         </nav>
         <input type="checkbox" id="theme-toggle" class="visually-hidden" />
-        <label for="theme-toggle" class="theme-toggle"><span class="visually-hidden">Växla tema</span></label>
+        <label for="theme-toggle" class="theme-toggle"><span class="visually-hidden">Mörkt tema</span></label>
       </div>
     </header>
 
@@ -86,22 +86,16 @@
       <!-- Main content wrapper with two-column layout -->
       <div class="recipe-layout">
         <!-- Left column: Hero image -->
-        <div class="recipe-image-column">
-          <!-- Use WebP with a PNG fallback. -->
-          <!-- LCP (Largest Contentful Paint) measures how long it takes for the largest visible content to appear.
-             That is why the hero image has high priority. -->
-          <picture>
-            <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
-            <img
-              class="hero-image"
-              src="images/png/Pancake_Top.png"
-              alt="En tunn pannkaka vikt med hallon och grädde"
-              width="1280"
-              height="500"
-              fetchpriority="high"
-            />
-          </picture>
-        </div>
+        <picture class="recipe-image">
+          <source srcset="images/webp/Pancake_Top.webp" type="image/webp" />
+          <img
+            src="images/png/Pancake_Top.png"
+            alt="En tunn pannkaka vikt med hallon och grädde"
+            width="1281"
+            height="500"
+            fetchpriority="high"
+          />
+        </picture>
 
         <!-- Right column: Recipe content -->
         <div class="recipe-content-column">
@@ -195,8 +189,8 @@
               <img
                 src="images/png/Pancake_Bottom_Left.png"
                 alt=""
-                width="800"
-                height="600"
+                width="580"
+                height="467"
                 loading="lazy"
                 decoding="async"
               />
@@ -209,8 +203,8 @@
               <img
                 src="images/png/Pancake_Bottom_Right.png"
                 alt=""
-                width="800"
-                height="600"
+                width="580"
+                height="467"
                 loading="lazy"
                 decoding="async"
               />

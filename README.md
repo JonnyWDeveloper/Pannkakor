@@ -21,7 +21,10 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Images with thoughtful `alt` text (`alt=""` for decorative) | Yes – hero/cards have descriptive alt, serving images have `alt=""` |
 | `figure` and `figcaption` where a visible caption adds value | Yes – serving suggestions |
 | Menu shows the active page with `aria-current="page"` | Yes |
-| Keyboard, screen reader, no WAVE errors | Yes – skip link, `:focus-visible`, semantic structure |
+| Keyboard navigation | Skip link, theme toggle, and ingredient checkboxes tested in Chrome |
+| WAVE | AIM score 10/10 on all three pages, as reported. The start page showed 0 errors, 0 contrast errors, and 3 redundant-link alerts. |
+| Screen reader | Manual testing pending |
+| Lighthouse | All three pages scored 100 / 100 / 100 / 100 and 2/2 on both mobile and desktop. |
 | CSS reset with source comment | Yes – comment with source (Andy Bell) |
 | Colors, fonts, and spacing in variables (tokens), no hardcoded colors | Yes – `:root` with `--color-*`, `--spacing-*` |
 | Unit strategy (rem/px) and 200% text size without clipping | Yes – rem for scale, px for borders; `clamp()` |
@@ -46,7 +49,7 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 | Recipe cards change columns with `repeat(auto-fit, minmax(...))` without media queries | Yes |
 | Typography/spacing scale with `clamp()` | Yes |
 | No `@media` | Yes |
-| Modern colors (`oklch()`), good contrast (WCAG AA) | Yes |
+| Modern colors (`oklch()`), good contrast (WCAG AA) | OKLCH palette. Contrast spot checks pass AA thresholds in both themes. |
 
 #### 60–30–10 color guideline
 
