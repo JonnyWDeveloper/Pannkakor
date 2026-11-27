@@ -83,7 +83,7 @@ When the demo form passes validation, the browser loads the same page with empty
 - **Chrome keyboard checks.** Skip link, theme toggle, and ingredient checkboxes.
 - **WAVE.** AIM score 10/10 on all three pages. The homepage reported zero errors, zero contrast errors, and three redundant-link alerts.
 - **Lighthouse.** All three pages scored 100 in Performance, Accessibility, Best Practices, and SEO on mobile and desktop.
-- **Screen reader.** Manual testing is pending.
+- **Screen reader.** More manual testing is pending.
 
 ## How to test
 
