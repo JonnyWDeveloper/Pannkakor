@@ -8,7 +8,6 @@ A small recipe site built with semantic HTML, modern CSS, and accessibility in m
 - `recept.html` – recipe page with facts, ingredients, and steps
 - `dela-recept.html` – demo form with native browser validation
 - `style.css` – design system, tokens, reset, and all styling
-- `ProjectRules.clinerules` – course requirements and project rules
 
 ## Requirements and how they are met
 
